@@ -1,117 +1,193 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="dark">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Dumpling Income Calculator</title>
+<title>Dumpling Calculator</title>
+<script>(function(){try{var t=localStorage.getItem('dumplingTheme')||'dark';document.documentElement.setAttribute('data-theme',t);}catch(e){}})();</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
 <style>
   :root{
-    --bg1:#ffe3f1; --bg2:#e7e9ff; --bg3:#dff7ff;
-    --card:#ffffff; --ink:#3a2b4d; --muted:#9286a3; --line:#f0e6f4;
-    --grape:#9b30d9; --grape-soft:#f6ebff;
+    --bg1:#ffd9ec; --bg2:#e6e6ff; --bg3:#d6f5ff;
+    --card:#ffffff; --card2:#fbf6ff; --ink:#37294d; --muted:#9286a3; --line:#efe5f6;
+    --grape:#9b30d9; --grape-dark:#6a1f96; --grape-soft:#f6ebff;
     --money:#0fbf5e; --money-dark:#0a7d3e;
     --fate:#ff7a18; --fate-dark:#c8500a; --fate-soft:#fff1e6;
-    --shadow:0 10px 30px rgba(120,60,150,.12);
-    --shadow-sm:0 4px 12px rgba(120,60,150,.10);
+    --input-bg:#fbf6ff; --chip-bg:#fdfaff;
+    --readout-bg:linear-gradient(165deg,#ffffff,#fbf2ff);
+    --shadow:0 14px 38px rgba(120,60,150,.14);
+    --shadow-sm:0 5px 16px rgba(120,60,150,.10);
+  }
+  html[data-theme="dark"]{
+    --bg1:#33163a; --bg2:#13102a; --bg3:#0c1d2c;
+    --card:#241d3a; --card2:#1e1734; --ink:#f3edfc; --muted:#a89bc2; --line:#3a3057;
+    --grape:#c279f2; --grape-dark:#9043cc; --grape-soft:#322449;
+    --money:#23db78; --money-dark:#0c8f47;
+    --fate:#ff9a52; --fate-dark:#b85b14; --fate-soft:#3c2715;
+    --input-bg:#1c1633; --chip-bg:#201a38;
+    --readout-bg:linear-gradient(165deg,#2b2342,#221b39);
+    --shadow:0 16px 40px rgba(0,0,0,.45);
+    --shadow-sm:0 6px 18px rgba(0,0,0,.32);
   }
   *{box-sizing:border-box;}
   html,body{margin:0;padding:0;}
   body{
     font-family:'Nunito',system-ui,sans-serif;color:var(--ink);
     background:
-      radial-gradient(1200px 700px at 15% -10%, var(--bg1), transparent 60%),
-      radial-gradient(1100px 800px at 100% 0%, var(--bg3), transparent 55%),
-      linear-gradient(160deg,var(--bg2),#fbf3ff 70%);
-    min-height:100vh;padding:28px 16px 60px;
+      radial-gradient(1100px 650px at 12% -8%, var(--bg1), transparent 58%),
+      radial-gradient(1000px 750px at 102% 2%, var(--bg3), transparent 52%),
+      linear-gradient(160deg,var(--bg2),var(--card) 92%);
+    background-attachment:fixed;
+    min-height:100vh;padding:26px 16px 64px;transition:background .35s,color .35s;
   }
-  .wrap{max-width:880px;margin:0 auto;}
-  header{text-align:center;margin-bottom:22px;}
-  .eyebrow{font-family:'Fredoka',sans-serif;font-weight:600;letter-spacing:.5px;color:var(--grape);text-transform:uppercase;font-size:13px;opacity:.85;}
-  h1{font-family:'Fredoka',sans-serif;font-weight:700;font-size:clamp(30px,6vw,46px);margin:.1em 0 .15em;color:var(--ink);line-height:1.02;}
+  .wrap{max-width:900px;margin:0 auto;}
+  header{text-align:center;margin-bottom:6px;}
+  .eyebrow{font-family:'Fredoka',sans-serif;font-weight:600;letter-spacing:1.5px;color:var(--grape);text-transform:uppercase;font-size:12px;opacity:.9;}
+  h1{font-family:'Fredoka',sans-serif;font-weight:700;font-size:clamp(32px,6.4vw,50px);margin:.06em 0 .12em;color:var(--ink);line-height:1;letter-spacing:-.5px;}
   .sub{color:var(--muted);font-size:15px;font-weight:600;}
 
-  .readout{margin:22px 0 26px;border-radius:26px;padding:30px 24px 26px;background:linear-gradient(170deg,#fff,#fdf5ff);box-shadow:var(--shadow);text-align:center;position:relative;overflow:hidden;border:1px solid #fbeaff;}
-  .readout:before{content:"";position:absolute;inset:0;pointer-events:none;background:radial-gradient(420px 160px at 50% -40px, rgba(155,48,217,.10), transparent 70%);}
-  .readout .label{font-family:'Fredoka',sans-serif;font-weight:500;color:var(--muted);font-size:14px;letter-spacing:.6px;text-transform:uppercase;}
-  .money{font-family:'Fredoka',sans-serif;font-weight:700;font-size:clamp(40px,11vw,76px);line-height:1;margin:6px 0 2px;color:var(--money);-webkit-text-stroke:2px var(--money-dark);paint-order:stroke fill;text-shadow:0 4px 0 rgba(10,125,62,.18);transition:transform .12s ease;}
-  .money.pulse{transform:scale(1.04);}
+  .theme-btn{position:fixed;top:16px;right:16px;z-index:60;width:46px;height:46px;border-radius:50%;border:2px solid var(--line);background:var(--card);font-size:19px;cursor:pointer;box-shadow:var(--shadow-sm);transition:transform .18s,border-color .18s;display:flex;align-items:center;justify-content:center;}
+  .theme-btn:hover{transform:scale(1.1) rotate(-10deg);border-color:var(--grape);}
+
+  .tabs{display:flex;gap:8px;justify-content:center;margin:20px 0 6px;flex-wrap:wrap;}
+  .tab{font-family:'Fredoka',sans-serif;font-weight:500;font-size:15px;color:var(--muted);background:var(--card);border:2px solid var(--line);border-radius:99px;padding:10px 24px;cursor:pointer;transition:all .16s;box-shadow:var(--shadow-sm);}
+  .tab:hover{border-color:var(--grape);color:var(--ink);transform:translateY(-1px);}
+  .tab.active{color:#fff;background:linear-gradient(135deg,var(--grape),var(--grape-dark));border-color:transparent;box-shadow:0 8px 20px rgba(155,48,217,.35);}
+  .panel.hidden{display:none;}
+
+  .readout{margin:18px 0 24px;border-radius:28px;padding:32px 24px 26px;background:var(--readout-bg);box-shadow:var(--shadow);text-align:center;position:relative;overflow:hidden;border:1px solid var(--line);}
+  .readout:before{content:"";position:absolute;inset:0;pointer-events:none;background:radial-gradient(460px 180px at 50% -50px, rgba(155,48,217,.13), transparent 70%);}
+  .readout .label{font-family:'Fredoka',sans-serif;font-weight:500;color:var(--muted);font-size:13px;letter-spacing:.8px;text-transform:uppercase;}
+  .money{font-family:'Fredoka',sans-serif;font-weight:700;font-size:clamp(42px,11.5vw,80px);line-height:1;margin:8px 0 2px;color:var(--money);-webkit-text-stroke:2px var(--money-dark);paint-order:stroke fill;text-shadow:0 5px 0 rgba(10,125,62,.18);transition:transform .12s ease;}
+  .money.pulse{transform:scale(1.045);}
   .money .per{font-size:.42em;-webkit-text-stroke:1px var(--money-dark);}
-  .mult-line{color:var(--muted);font-weight:700;font-size:14px;margin-top:8px;}
+  .mult-line{color:var(--muted);font-weight:700;font-size:14px;margin-top:10px;}
   .mult-line b{color:var(--grape);}
+  .readout.base .money{color:var(--grape);-webkit-text-stroke:2px var(--grape-dark);text-shadow:0 5px 0 rgba(106,31,150,.18);}
+  .readout.base .money .per{-webkit-text-stroke:1px var(--grape-dark);}
 
   .grid{display:grid;grid-template-columns:1fr 1fr;gap:18px;}
   @media (max-width:680px){.grid{grid-template-columns:1fr;}}
-  .card{background:var(--card);border-radius:20px;padding:20px;box-shadow:var(--shadow-sm);border:1px solid var(--line);}
-  .card h2{font-family:'Fredoka',sans-serif;font-weight:600;font-size:16px;margin:0 0 14px;color:var(--grape);display:flex;align-items:center;gap:8px;}
+  .card{background:var(--card);border-radius:22px;padding:20px;box-shadow:var(--shadow-sm);border:1px solid var(--line);transition:background .35s,border-color .35s;}
+  .card h2{font-family:'Fredoka',sans-serif;font-weight:600;font-size:16px;margin:0 0 16px;color:var(--ink);display:flex;align-items:center;gap:10px;}
+  .card h2 .ic{display:inline-flex;align-items:center;justify-content:center;width:32px;height:32px;border-radius:10px;background:var(--grape-soft);color:var(--grape);font-size:16px;flex:none;}
+  .card h2 .ic svg{width:18px;height:18px;}
+  .fate .card h2 .ic{background:var(--fate-soft);color:var(--fate-dark);}
+  .tab svg{width:16px;height:16px;vertical-align:-3px;margin-right:7px;}
   .card.span2{grid-column:1/-1;}
+  .theme-btn svg{width:21px;height:21px;color:var(--ink);}
+  .cos-ic{display:inline-flex;align-items:center;color:var(--grape);}
+  .cos-ic svg{width:15px;height:15px;}
+  .dic{display:inline-flex;align-items:center;color:var(--fate-dark);margin-right:7px;}
+  .dic svg{width:15px;height:15px;vertical-align:-2px;}
 
-  label.field{display:block;margin-bottom:14px;}
+  label.field{display:block;margin-bottom:15px;}
   label.field:last-child{margin-bottom:0;}
-  .field .cap{font-weight:700;font-size:13px;color:var(--ink);margin-bottom:6px;display:block;}
-  input[type=number],select{width:100%;font-family:'Nunito',sans-serif;font-weight:700;font-size:15px;color:var(--ink);background:#fbf7fe;border:2px solid var(--line);border-radius:12px;padding:11px 12px;outline:none;transition:border-color .15s,box-shadow .15s;}
-  input[type=number]:focus,select:focus{border-color:var(--grape);box-shadow:0 0 0 4px rgba(155,48,217,.12);}
-  .row2{display:flex;gap:10px;} .row2 input{flex:2;} .row2 select{flex:1;}
+  .field .cap{font-weight:700;font-size:13px;color:var(--ink);margin-bottom:7px;display:block;}
+  input[type=number]{width:100%;font-family:'Nunito',sans-serif;font-weight:700;font-size:15px;color:var(--ink);background:var(--input-bg);border:2px solid var(--line);border-radius:12px;padding:11px 13px;outline:none;transition:border-color .15s,box-shadow .15s;}
+  input[type=number]:focus{border-color:var(--grape);box-shadow:0 0 0 4px rgba(155,48,217,.15);}
+  .row2{display:flex;gap:10px;align-items:stretch;} .row2 input{flex:2;min-width:0;}
   .hidden{display:none !important;}
 
-  .muts{display:grid;grid-template-columns:repeat(auto-fill,minmax(118px,1fr));gap:10px;}
-  .mut{display:flex;align-items:center;gap:9px;cursor:pointer;user-select:none;border:2px solid var(--line);border-radius:13px;padding:9px 11px;background:#fdfaff;transition:all .14s ease;position:relative;}
-  .mut:hover{border-color:#ecd6f7;}
-  .mut.on{border-color:var(--grape);background:var(--grape-soft);box-shadow:0 3px 10px rgba(155,48,217,.13);}
-  .mut .dot{width:18px;height:18px;border-radius:50%;flex:none;box-shadow:inset 0 -2px 3px rgba(0,0,0,.18),0 1px 2px rgba(0,0,0,.15);}
+  /* custom dropdown */
+  .dd{position:relative;width:100%;}
+  .dd-btn{width:100%;display:flex;align-items:center;justify-content:space-between;gap:8px;font-family:'Nunito',sans-serif;font-weight:700;font-size:15px;color:var(--ink);background:var(--input-bg);border:2px solid var(--line);border-radius:12px;padding:11px 13px;cursor:pointer;transition:border-color .15s,box-shadow .15s;text-align:left;}
+  .dd-btn:hover{border-color:var(--grape);}
+  .dd-btn.open{border-color:var(--grape);box-shadow:0 0 0 4px rgba(155,48,217,.15);}
+  .dd-val{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+  .dd-chev{width:15px;height:15px;color:var(--muted);transition:transform .2s;flex:none;}
+  .dd-btn.open .dd-chev{transform:rotate(180deg);}
+  .dd-list{position:absolute;top:calc(100% + 6px);left:0;right:0;z-index:40;background:var(--card);border:2px solid var(--line);border-radius:13px;box-shadow:var(--shadow);max-height:248px;overflow:auto;padding:6px;display:none;}
+  .dd-list.open{display:block;}
+  .dd-item{padding:9px 11px;border-radius:9px;font-weight:700;font-size:14px;color:var(--ink);cursor:pointer;transition:background .12s;}
+  .dd-item:hover{background:var(--grape-soft);}
+  .dd-item.sel{background:var(--grape-soft);color:var(--grape);}
+
+  /* mutation chips */
+  .muts{display:grid;grid-template-columns:repeat(auto-fill,minmax(120px,1fr));gap:10px;}
+  .mut{display:flex;align-items:center;gap:9px;cursor:pointer;user-select:none;border:2px solid var(--line);border-radius:14px;padding:10px 11px;background:var(--chip-bg);transition:all .14s ease;position:relative;}
+  .mut:hover{border-color:var(--grape);transform:translateY(-1px);}
+  .mut.on{border-color:var(--grape);background:var(--grape-soft);box-shadow:0 4px 12px rgba(155,48,217,.18);}
+  .mut .micon{width:27px;height:27px;flex:none;display:inline-flex;filter:drop-shadow(0 1px 1.5px rgba(0,0,0,.22));}
+  .mut .micon svg{width:27px;height:27px;display:block;}
   .mut .nm{font-weight:800;font-size:13px;line-height:1.05;}
   .mut .vl{font-weight:700;font-size:11px;color:var(--muted);}
   .mut .txt{display:flex;flex-direction:column;}
-  .mut.best:after{content:"BEST";position:absolute;top:-8px;right:-6px;background:var(--money);color:#fff;font-family:'Fredoka',sans-serif;font-size:9px;font-weight:600;padding:2px 6px;border-radius:8px;letter-spacing:.5px;box-shadow:0 2px 5px rgba(15,191,94,.4);}
-  .fate .mut.on{border-color:var(--fate);background:var(--fate-soft);box-shadow:0 3px 10px rgba(255,122,24,.16);}
-  .fate .mut.best:after{background:var(--fate);box-shadow:0 2px 5px rgba(255,122,24,.4);}
+  .mut.best:after{content:"BEST";position:absolute;top:-8px;right:-6px;background:var(--money);color:#fff;font-family:'Fredoka',sans-serif;font-size:9px;font-weight:600;padding:2px 6px;border-radius:8px;letter-spacing:.5px;box-shadow:0 2px 6px rgba(15,191,94,.45);}
 
+  /* grade chips */
+  .grades{display:flex;flex-wrap:wrap;gap:8px;}
+  .grade{display:flex;flex-direction:column;align-items:center;min-width:52px;padding:8px 10px 6px;border-radius:14px;border:2px solid var(--line);background:var(--chip-bg);cursor:pointer;user-select:none;transition:all .14s ease;}
+  .grade:hover{border-color:var(--gc);transform:translateY(-1px);}
+  .grade .g-name{font-family:'Fredoka',sans-serif;font-weight:700;font-size:18px;line-height:1.1;color:var(--gc);text-shadow:0 1px 0 rgba(0,0,0,.14);}
+  .grade .g-mult{font-weight:700;font-size:10px;color:var(--muted);}
+  .grade.on{border-color:var(--gc);background:color-mix(in srgb,var(--gc) 18%,var(--card));box-shadow:0 5px 15px color-mix(in srgb,var(--gc) 34%,transparent);}
+  .grade.on .g-mult{color:var(--ink);}
+
+  /* cosmetic slots */
+  .cos-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px 26px;}
+  @media (max-width:560px){.cos-grid{grid-template-columns:1fr;}}
+  .cos-lab{font-weight:800;font-size:13px;margin-bottom:7px;display:flex;align-items:center;gap:7px;color:var(--ink);}
+  .cos-ic{font-size:15px;}
+  .cos-segs{display:flex;gap:6px;flex-wrap:wrap;}
+  .seg{font-family:'Nunito',sans-serif;font-weight:700;font-size:12.5px;color:var(--muted);background:var(--chip-bg);border:2px solid var(--line);border-radius:10px;padding:7px 0;cursor:pointer;transition:all .14s;flex:1;min-width:46px;text-align:center;}
+  .seg:hover{border-color:var(--grape);color:var(--ink);}
+  .seg.on{color:#fff;background:linear-gradient(135deg,var(--grape),var(--grape-dark));border-color:transparent;box-shadow:0 4px 10px rgba(155,48,217,.28);}
+  .cos-total{margin-top:14px;font-weight:800;font-size:13px;color:var(--muted);text-align:right;}
+  .cos-total b{color:var(--grape);font-size:15px;}
+
+  /* toggles */
   .toggles{display:flex;flex-direction:column;gap:12px;}
   .tog{display:flex;align-items:center;justify-content:space-between;gap:12px;}
   .tog .tg-l{font-weight:800;font-size:14px;}
   .tog .tg-s{font-weight:700;font-size:12px;color:var(--muted);}
   .switch{position:relative;width:50px;height:28px;flex:none;}
   .switch input{opacity:0;width:0;height:0;}
-  .slider{position:absolute;inset:0;background:#e3d5ee;border-radius:99px;transition:.18s;cursor:pointer;}
-  .slider:before{content:"";position:absolute;width:22px;height:22px;left:3px;top:3px;background:#fff;border-radius:50%;transition:.18s;box-shadow:0 2px 4px rgba(0,0,0,.18);}
+  .slider{position:absolute;inset:0;background:var(--line);border-radius:99px;transition:.18s;cursor:pointer;}
+  .slider:before{content:"";position:absolute;width:22px;height:22px;left:3px;top:3px;background:#fff;border-radius:50%;transition:.18s;box-shadow:0 2px 4px rgba(0,0,0,.28);}
   .switch input:checked + .slider{background:var(--money);}
   .switch input:checked + .slider:before{transform:translateX(22px);}
   .fate .switch input:checked + .slider{background:var(--fate);}
 
-  .hint{font-size:12.5px;color:var(--muted);font-weight:600;margin-top:10px;line-height:1.5;}
+  .hint{font-size:12.5px;color:var(--muted);font-weight:600;margin-top:12px;line-height:1.55;}
   .hint code{background:var(--grape-soft);color:var(--grape);padding:1px 6px;border-radius:6px;font-family:'Fredoka',sans-serif;font-size:12px;}
 
-  .inherit{display:flex;flex-direction:column;gap:2px;background:var(--fate-soft);border:2px dashed #ffd2ad;border-radius:12px;padding:11px 13px;}
+  .inherit{display:flex;flex-direction:column;gap:2px;background:var(--fate-soft);border:2px dashed var(--fate);border-radius:13px;padding:11px 13px;}
   .inherit .ih-cap{font-weight:700;font-size:12px;color:var(--fate-dark);text-transform:uppercase;letter-spacing:.4px;}
-  .inherit .ih-val{font-family:'Fredoka',sans-serif;font-weight:600;font-size:22px;color:var(--fate);-webkit-text-stroke:1px var(--fate-dark);}
+  .inherit .ih-val{font-family:'Fredoka',sans-serif;font-weight:600;font-size:22px;color:var(--fate);-webkit-text-stroke:1px var(--fate-dark);paint-order:stroke fill;}
 
-  .divider{display:flex;align-items:center;gap:14px;margin:40px 0 4px;}
-  .divider:before,.divider:after{content:"";height:2px;flex:1;background:linear-gradient(90deg,transparent,#f0d9c4,transparent);}
+  .divider{display:flex;align-items:center;gap:14px;margin:42px 0 6px;}
+  .divider:before,.divider:after{content:"";height:2px;flex:1;background:linear-gradient(90deg,transparent,var(--line),transparent);}
   .divider span{font-family:'Fredoka',sans-serif;font-weight:600;color:var(--fate-dark);text-transform:uppercase;letter-spacing:1px;font-size:13px;}
-  .fate .readout{background:linear-gradient(170deg,#fff,#fff7f0);border-color:#ffe6d2;}
-  .fate .readout:before{background:radial-gradient(420px 160px at 50% -40px, rgba(255,122,24,.10), transparent 70%);}
-  .fate .money{color:var(--fate);-webkit-text-stroke:2px var(--fate-dark);text-shadow:0 4px 0 rgba(200,80,10,.18);}
+  .fate .readout:before{background:radial-gradient(460px 180px at 50% -50px, rgba(255,122,24,.13), transparent 70%);}
+  .fate .money{color:var(--fate);-webkit-text-stroke:2px var(--fate-dark);text-shadow:0 5px 0 rgba(200,80,10,.18);}
   .fate .money .per{-webkit-text-stroke:1px var(--fate-dark);}
   .fate .mult-line b{color:var(--fate-dark);}
-  .fate .card h2{color:var(--fate-dark);}
-  .fate input:focus,.fate select:focus{border-color:var(--fate);box-shadow:0 0 0 4px rgba(255,122,24,.12);}
+  .fate input:focus{border-color:var(--fate);box-shadow:0 0 0 4px rgba(255,122,24,.15);}
   .fate .hint code{background:var(--fate-soft);color:var(--fate-dark);}
   .fate-intro{color:var(--muted);font-weight:600;font-size:14px;text-align:center;margin:2px 0 0;}
 
-  footer{text-align:center;color:var(--muted);font-size:12.5px;font-weight:700;margin-top:30px;}
+  footer{text-align:center;color:var(--muted);font-size:12.5px;font-weight:700;margin-top:32px;}
 </style>
 </head>
 <body>
+<button class="theme-btn" id="themeToggle" title="Toggle theme">🌙</button>
 <div class="wrap">
 
   <header>
     <div class="eyebrow">Squishy Idle</div>
-    <h1>Dumpling Income Calculator</h1>
+    <h1>Dumpling Calculator</h1>
     <div class="sub">Set it up, watch the cash per second roll in.</div>
   </header>
 
+  <nav class="tabs">
+    <button class="tab active" data-tab="income" data-icon="coins">Income</button>
+    <button class="tab" data-tab="base" data-icon="search">Base Finder</button>
+  </nav>
+
+  <section id="tab-income" class="panel">
   <div class="readout">
     <div class="label">Income per second</div>
     <div class="money" id="out">$0<span class="per">/s</span></div>
@@ -119,44 +195,35 @@
   </div>
 
   <div class="grid">
-
     <div class="card">
-      <h2>⚙️ The basics</h2>
+      <h2><span class="ic" data-icon="gear"></span>The basics</h2>
       <label class="field">
         <span class="cap">Level</span>
         <input type="number" id="level" min="1" value="1">
       </label>
-
-      <div class="tog" style="margin-bottom:12px;">
+      <div class="tog" style="margin-bottom:13px;">
         <div><div class="tg-l">Custom base income</div><div class="tg-s">Type your own per-level value</div></div>
         <label class="switch"><input type="checkbox" id="customBase"><span class="slider"></span></label>
       </div>
-
       <label class="field" id="presetWrap">
         <span class="cap">Dumpling</span>
-        <select id="preset"></select>
+        <div id="presetDD"></div>
       </label>
-
       <label class="field hidden" id="customWrap">
         <span class="cap">Base income per level</span>
         <div class="row2">
           <input type="number" id="base" min="0" step="any" value="0.75">
-          <select id="baseMag"></select>
+          <div id="baseMagDD" style="flex:1;min-width:0;"></div>
         </div>
       </label>
-
       <div class="hint">Presets use the raw base (passes added by the toggles). Flip the switch to enter any base.</div>
     </div>
 
     <div class="card">
-      <h2>🏅 Grade & extras</h2>
-      <label class="field">
+      <h2><span class="ic" data-icon="award"></span>Grade & passes</h2>
+      <label class="field" style="margin-bottom:18px;">
         <span class="cap">Grade</span>
-        <select id="grade"></select>
-      </label>
-      <label class="field">
-        <span class="cap">Cosmetic bonus (%)</span>
-        <input type="number" id="cos" min="0" step="any" value="0">
+        <div class="grades" id="grades"></div>
       </label>
       <div class="toggles">
         <div class="tog">
@@ -171,89 +238,214 @@
     </div>
 
     <div class="card span2">
-      <h2>💎 Mutations</h2>
+      <h2><span class="ic" data-icon="sparkles"></span>Cosmetics</h2>
+      <div class="cos-grid" id="cosGrid"></div>
+      <div class="cos-total">Total bonus <b id="cosTotal">+0%</b></div>
+    </div>
+
+    <div class="card span2">
+      <h2><span class="ic" data-icon="gem"></span>Mutations</h2>
       <div class="muts" id="muts"></div>
       <div class="hint">Your strongest mutation counts fully. Every other one adds only <code>(value − 1) ÷ 4</code>. The “best” tag shows which one is carrying.</div>
     </div>
-
   </div>
+  </section>
 
-  <!-- ============ WOVEN FATE ============ -->
-  <div class="fate">
-    <div class="divider"><span>🧵 Woven Fate</span></div>
+  <div class="fate" id="fateBlock">
+    <div class="divider"><span><span class="dic" data-icon="wand"></span>Woven Fate</span></div>
     <p class="fate-intro">A Woven Fate dumpling inherits your <b>best dumpling's whole income</b>, passes, grade and cosmetics already baked in. By default it uses the dumpling above. Admin can't roll on Woven Fate.</p>
-
     <div class="readout">
       <div class="label">Woven Fate income per second</div>
       <div class="money" id="fOut">$0<span class="per">/s</span></div>
       <div class="mult-line" id="fMultline">Pick a setup to begin</div>
     </div>
-
     <div class="grid">
       <div class="card">
-        <h2>🧵 Setup</h2>
+        <h2><span class="ic" data-icon="wand"></span>Setup</h2>
         <label class="field">
           <span class="cap">Level</span>
           <input type="number" id="fLevel" min="1" value="1">
         </label>
-
-        <div class="tog" style="margin-bottom:12px;">
+        <div class="tog" style="margin-bottom:13px;">
           <div><div class="tg-l">Custom best income</div><div class="tg-s">Override the dumpling above</div></div>
           <label class="switch"><input type="checkbox" id="fCustom"><span class="slider"></span></label>
         </div>
-
         <div class="field inherit" id="fInheritWrap">
           <span class="ih-cap">Inheriting from above</span>
           <span class="ih-val" id="fInheritVal">$0/s</span>
         </div>
-
         <label class="field hidden" id="fCustomWrap">
           <span class="cap">Income of your best dumpling</span>
           <div class="row2">
             <input type="number" id="fBest" min="0" step="any" value="90">
-            <select id="fBestMag"></select>
+            <div id="fBestMagDD" style="flex:1;min-width:0;"></div>
           </div>
         </label>
       </div>
-
       <div class="card">
-        <h2>💎 Its mutations</h2>
+        <h2><span class="ic" data-icon="gem"></span>Its mutations</h2>
         <div class="muts" id="fMuts"></div>
       </div>
     </div>
   </div>
 
+  <section id="tab-base" class="panel hidden">
+    <div class="readout base">
+      <div class="label">Base income per level</div>
+      <div class="money" id="bOut">$0<span class="per">/lvl</span></div>
+      <div class="mult-line" id="bMultline">Enter a dumpling's stats</div>
+    </div>
+    <div class="grid">
+      <div class="card">
+        <h2><span class="ic" data-icon="gear"></span>Known stats</h2>
+        <label class="field">
+          <span class="cap">Displayed income per second</span>
+          <div class="row2">
+            <input type="number" id="bIncome" min="0" step="any" value="" placeholder="0">
+            <div id="bIncomeMagDD" style="flex:1;min-width:0;"></div>
+          </div>
+        </label>
+        <label class="field">
+          <span class="cap">Level</span>
+          <input type="number" id="bLevel" min="1" value="1">
+        </label>
+        <div class="hint">Type the dumpling's income exactly as the game shows it, then match the rest of its stats.</div>
+      </div>
+
+      <div class="card">
+        <h2><span class="ic" data-icon="award"></span>Grade & passes</h2>
+        <label class="field" style="margin-bottom:18px;">
+          <span class="cap">Grade</span>
+          <div class="grades" id="bGrades"></div>
+        </label>
+        <div class="toggles">
+          <div class="tog">
+            <div><div class="tg-l">2× Cash pass</div><div class="tg-s">Doubles income</div></div>
+            <label class="switch"><input type="checkbox" id="bCash"><span class="slider"></span></label>
+          </div>
+          <div class="tog">
+            <div><div class="tg-l">VIP pass</div><div class="tg-s">+20% income</div></div>
+            <label class="switch"><input type="checkbox" id="bVip"><span class="slider"></span></label>
+          </div>
+        </div>
+      </div>
+
+      <div class="card span2">
+        <h2><span class="ic" data-icon="sparkles"></span>Cosmetics</h2>
+        <div class="cos-grid" id="bCosGrid"></div>
+        <div class="cos-total">Total bonus <b id="bCosTotal">+0%</b></div>
+      </div>
+
+      <div class="card span2">
+        <h2><span class="ic" data-icon="gem"></span>Mutations</h2>
+        <div class="muts" id="bMuts"></div>
+        <div class="hint">Tick exactly the mutations on the dumpling. The base is found by dividing the income back out through every multiplier.</div>
+      </div>
+    </div>
+  </section>
+
   <footer></footer>
 </div>
 
 <script>
-// ---- data ----
+const ICONS = {
+  gear:'<circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/>',
+  award:'<circle cx="12" cy="8" r="6"/><path d="M15.477 12.89 17 22l-5-3-5 3 1.523-9.11"/>',
+  sparkles:'<path d="m12 3-1.9 5.8a2 2 0 0 1-1.3 1.3L3 12l5.8 1.9a2 2 0 0 1 1.3 1.3L12 21l1.9-5.8a2 2 0 0 1 1.3-1.3L21 12l-5.8-1.9a2 2 0 0 1-1.3-1.3Z"/><path d="M5 3v4"/><path d="M19 17v4"/><path d="M3 5h4"/><path d="M17 19h4"/>',
+  gem:'<path d="M6 3h12l4 6-10 13L2 9Z"/><path d="M11 3 8 9l4 13 4-13-3-6"/><path d="M2 9h20"/>',
+  wand:'<path d="m21.6 3.6-1.2-1.2a1.2 1.2 0 0 0-1.7 0L2.4 18.6a1.2 1.2 0 0 0 0 1.7l1.3 1.3a1.2 1.2 0 0 0 1.7 0L21.6 5.4a1.2 1.2 0 0 0 0-1.8Z"/><path d="m14 7 3 3"/><path d="M5 6v4"/><path d="M19 14v4"/><path d="M10 2v2"/><path d="M7 8H3"/><path d="M21 16h-4"/><path d="M11 3H9"/>',
+  coins:'<circle cx="8" cy="8" r="6"/><path d="M18.09 10.37A6 6 0 1 1 10.34 18"/><path d="M7 6h1v4"/><path d="m16.71 13.88.7.71-2.82 2.82"/>',
+  search:'<circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/>',
+  moon:'<path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/>',
+  sun:'<circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/>',
+  crown:'<path d="M11.56 3.27a.5.5 0 0 1 .88 0l2.95 5.6a1 1 0 0 0 1.52.3L21.18 5.5a.5.5 0 0 1 .8.52l-2.84 10.25a1 1 0 0 1-.96.73H5.81a1 1 0 0 1-.95-.73L2.02 6.02a.5.5 0 0 1 .8-.52l4.27 3.66a1 1 0 0 0 1.52-.3z"/><path d="M5 21h14"/>',
+  shirt:'<path d="M20.38 3.46 16 2a4 4 0 0 1-8 0L3.62 3.46a2 2 0 0 0-1.34 2.23l.58 3.47a1 1 0 0 0 .99.84H6v10c0 1.1.9 2 2 2h8a2 2 0 0 0 2-2V10h2.15a1 1 0 0 0 .99-.84l.58-3.47a2 2 0 0 0-1.34-2.23z"/>',
+  sword:'<polyline points="14.5 17.5 3 6 3 3 6 3 17.5 14.5"/><line x1="13" x2="19" y1="19" y2="13"/><line x1="16" x2="20" y1="16" y2="20"/><line x1="19" x2="21" y1="21" y2="19"/>',
+  feather:'<path d="M20.24 12.24a6 6 0 0 0-8.49-8.49L5 10.5V19h8.5z"/><line x1="16" x2="2" y1="8" y2="22"/><line x1="17.5" x2="9" y1="15" y2="15"/>',
+};
+function icon(name){
+  return '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">'+(ICONS[name]||'')+'</svg>';
+}
+function initIcons(){
+  document.querySelectorAll('[data-icon]').forEach(el=>{
+    const n=el.dataset.icon;
+    if(el.classList.contains('tab')) el.insertAdjacentHTML('afterbegin',icon(n));
+    else el.innerHTML=icon(n);
+  });
+}
+
 const MUTATIONS = [
-  {name:"Gold",      val:5,   color:"#ffd23f"},
-  {name:"Diamond",   val:15,  color:"#7fe3ff"},
-  {name:"Ruby",      val:45,  color:"#ff4d6d"},
-  {name:"Bubblegum", val:70,  color:"#ff9ad5"},
-  {name:"Lightning", val:90,  color:"#ffe14d"},
-  {name:"Cloud",     val:90,  color:"#d7e6f5"},
-  {name:"Blossom",   val:120, color:"#ff7fa8"},
-  {name:"Admin",     val:150, color:"#2b2b34"},
-  {name:"Heart",     val:300, color:"#ff2d6f"},
+  {name:"Gold",val:5,ic:"gem",color:"#f4c020"},
+  {name:"Diamond",val:15,ic:"gem",color:"#36b6f0"},
+  {name:"Ruby",val:45,ic:"gem",color:"#f0354f"},
+  {name:"Bubblegum",val:70,ic:"bubble",color:"#e06cce"},
+  {name:"Lightning",val:90,ic:"bolt",color:"#ffd21f"},
+  {name:"Cloud",val:90,ic:"cloud",color:"#eef4fa"},
+  {name:"Blossom",val:120,ic:"flower",color:"#c483e6"},
+  {name:"Admin",val:150,ic:"burst",color:"#2f3b48"},
+  {name:"Heart",val:300,ic:"heart",color:"#ff3a5c"},
 ];
-const ADMIN_IDX = 7; // not allowed on Woven Fate
-
+function mutIcon(type,c){
+  const OL='#1c1430', hi='rgba(255,255,255,.34)';
+  const S=s=>'<svg viewBox="0 0 24 24" fill="none">'+s+'</svg>';
+  switch(type){
+    case 'gem': return S(
+      '<path d="M6 4H18L21 9 12 21 3 9Z" fill="'+c+'" stroke="'+OL+'" stroke-width="1.7" stroke-linejoin="round"/>'+
+      '<path d="M6 4H18L21 9H3Z" fill="'+hi+'"/>'+
+      '<path d="M3 9H21" stroke="rgba(0,0,0,.22)" stroke-width="1"/>'+
+      '<path d="M9.2 4 8 9M14.8 4 16 9M8 9 12 21M16 9 12 21" stroke="rgba(0,0,0,.16)" stroke-width=".8"/>');
+    case 'bolt': return S(
+      '<path d="M14 2 5 13.4h5l-.7 8.6L19 9.8h-5L15.8 2Z" fill="'+c+'" stroke="'+OL+'" stroke-width="1.7" stroke-linejoin="round"/>');
+    case 'burst': return S(
+      '<path d="M12 1.2 14.2 6.5 17.8 4.8 18.5 9.5 21.5 11Q22 18 12 23Q2 18 2.5 11L5.5 9.5 6.2 4.8 9.8 6.5Z" fill="'+c+'" stroke="'+OL+'" stroke-width="1.6" stroke-linejoin="round"/>'+
+      '<ellipse cx="12" cy="15" rx="5" ry="6.4" fill="rgba(150,180,195,.17)"/>'+
+      '<circle cx="13.4" cy="6.7" r="1.25" fill="#9aa6b0"/>'+
+      '<rect x="9.9" y="8.6" width="4.2" height="4.2" rx="1.3" fill="#fff"/>'+
+      '<rect x="10.4" y="12.4" width="3.2" height="3.2" rx="1" fill="#fff"/>'+
+      '<rect x="9.05" y="12.8" width="1.1" height="2.9" rx=".55" fill="#fff" transform="rotate(32 9.6 14.25)"/>'+
+      '<rect x="13.85" y="12.8" width="1.1" height="2.9" rx=".55" fill="#fff" transform="rotate(-32 14.4 14.25)"/>'+
+      '<rect x="10.7" y="15.2" width="1.15" height="3" rx=".55" fill="#fff" transform="rotate(-12 11.27 16.7)"/>'+
+      '<rect x="12.15" y="15.2" width="1.15" height="3" rx=".55" fill="#fff" transform="rotate(12 12.72 16.7)"/>'+
+      '<path d="M17 6 17.8 8.2 20 9 17.8 9.8 17 12 16.2 9.8 14 9 16.2 8.2Z" fill="#fff"/>'+
+      '<path d="M7.5 11.2 8 12.5 9.3 13 8 13.5 7.5 14.8 7 13.5 5.7 13 7 12.5Z" fill="#aab4bd"/>');
+    case 'flower': return S(
+      '<path d="M12 12.5V21.5" stroke="#3aa23a" stroke-width="2.1" stroke-linecap="round"/>'+
+      '<path d="M12 18.4c-1.3-1.8-3.7-1.8-4.6-.5 1.1 1.6 3.3 1.6 4.6.5z" fill="#46c24a" stroke="#2e7d32" stroke-width=".7"/>'+
+      '<path d="M12 18.4c1.3-1.8 3.7-1.8 4.6-.5-1.1 1.6-3.3 1.6-4.6.5z" fill="#46c24a" stroke="#2e7d32" stroke-width=".7"/>'+
+      '<g fill="'+c+'" stroke="#8a3aab" stroke-width="1">'+
+      '<circle cx="12" cy="4.6" r="2.8"/><circle cx="15.9" cy="7.3" r="2.8"/><circle cx="14.4" cy="11.7" r="2.8"/><circle cx="9.6" cy="11.7" r="2.8"/><circle cx="8.1" cy="7.3" r="2.8"/>'+
+      '</g><circle cx="12" cy="8" r="2.4" fill="#edd2f7"/>');
+    case 'cloud': return S(
+      '<path d="M7 17.2h9a3.6 3.6 0 0 0 .4-7.18A5.1 5.1 0 0 0 6.4 8.8 3.7 3.7 0 0 0 7 17.2z" fill="'+c+'" stroke="#5b9bd5" stroke-width="1.6" stroke-linejoin="round"/>'+
+      '<path d="M9 15.6h6" stroke="rgba(91,155,213,.35)" stroke-width="1" stroke-linecap="round"/>');
+    case 'bubble': return S(
+      '<circle cx="12" cy="12" r="9.2" fill="'+c+'" stroke="'+OL+'" stroke-width="1.7"/>'+
+      '<path d="M17.5 7A8 8 0 0 1 8 19.6 9.2 9.2 0 0 0 17.5 7z" fill="rgba(90,30,110,.32)"/>'+
+      '<ellipse cx="9" cy="8.6" rx="2.7" ry="1.8" fill="rgba(255,255,255,.6)" transform="rotate(-32 9 8.6)"/>');
+    case 'heart': return S(
+      '<path d="M12 21S3 14.6 3 8.4C3 5.1 5.4 3.1 8 3.1c2 0 3.4 1.2 4 2.3.6-1.1 2-2.3 4-2.3 2.6 0 5 2 5 5.3C21 14.6 12 21 12 21z" fill="'+c+'" stroke="'+OL+'" stroke-width="1.7" stroke-linejoin="round"/>'+
+      '<ellipse cx="8.4" cy="8" rx="1.9" ry="1.2" fill="rgba(255,255,255,.5)" transform="rotate(-32 8.4 8)"/>');
+  }
+  return '';
+}
+const ADMIN_IDX = 7;
 const GRADES = [
-  {name:"F",  v:1},   {name:"E",  v:1.15}, {name:"D", v:1.25},
-  {name:"C",  v:1.5}, {name:"B",  v:2},    {name:"A", v:3},
-  {name:"S",  v:5},   {name:"S+", v:7.5},  {name:"SS",v:10},
-  {name:"SR", v:15},  {name:"UR", v:20},
+  {name:"F",v:1,c:"#c2c2cf"},{name:"E",v:1.15,c:"#5fd66b"},{name:"D",v:1.25,c:"#4db8ff"},
+  {name:"C",v:1.5,c:"#b07fff"},{name:"B",v:2,c:"#ffc23f"},{name:"A",v:3,c:"#ff7a33"},
+  {name:"S",v:5,c:"#ff4d4d"},{name:"S+",v:7.5,c:"#ff5fb0"},{name:"SS",v:10,c:"#ff2d4d"},
+  {name:"SR",v:15,c:"#7a5cff"},{name:"UR",v:20,c:"#ffce2e"},
 ];
-
+const COSMETIC_SLOTS = [
+  {key:"head",  name:"Head",   icon:"crown",   opts:[0,5,10,20,200]},
+  {key:"body",  name:"Body",   icon:"shirt",   opts:[0,5,10,20,200]},
+  {key:"weapon",name:"Weapon", icon:"sword",   opts:[0,20,60,200]},
+  {key:"tail",  name:"Tail",   icon:"feather", opts:[0,5,10,20,200]},
+];
 const PRESETS = [
-  {label:"Brown Uncommon Squishy", num:10,   exp:0},
-  {label:"Crystal Princess",       num:0.25, exp:36},
-  {label:"Diamond Crown Princess", num:0.75, exp:36},
+  {label:"Brown Uncommon Squishy",num:10,exp:0},
+  {label:"Crystal Princess",num:0.25,exp:36},
+  {label:"Diamond Crown Princess",num:0.75,exp:36},
 ];
-
 const SUFFIX = [
   {s:"",exp:0},{s:"K",exp:3},{s:"M",exp:6},{s:"B",exp:9},{s:"T",exp:12},
   {s:"Qa",exp:15},{s:"Qi",exp:18},{s:"Sx",exp:21},{s:"Sp",exp:24},{s:"Oc",exp:27},
@@ -262,118 +454,148 @@ const SUFFIX = [
   {s:"Nod",exp:60},{s:"V",exp:63},
 ];
 
-// ---- helpers ----
-function fillMag(sel){SUFFIX.forEach(u=>{const o=document.createElement('option');o.value=u.exp;o.textContent=u.s===""?"-":u.s;sel.appendChild(o);});}
 function fmt(n){
   if(!isFinite(n)||n<=0) return "$0";
-  const log=Math.log10(n);
-  let ti=0;
+  const log=Math.log10(n); let ti=0;
   for(let i=0;i<SUFFIX.length;i++){ if(log>=SUFFIX[i].exp) ti=i; else break; }
-  let tier=SUFFIX[ti];
-  let mant=n/Math.pow(10,tier.exp);            // in [1,1000)
-  // round to 3 significant figures (4th digit decides)
+  let tier=SUFFIX[ti],mant=n/Math.pow(10,tier.exp);
   const dec=m=>m>=100?0:(m>=10?1:2);
-  let rounded=Math.round(mant*Math.pow(10,dec(mant)))/Math.pow(10,dec(mant));
-  // carry up a tier if rounding pushed mantissa to 1000 (e.g. 999.6 -> 1.00 next)
-  if(rounded>=1000 && ti<SUFFIX.length-1){
-    tier=SUFFIX[ti+1];
-    mant=n/Math.pow(10,tier.exp);
-    rounded=Math.round(mant*Math.pow(10,dec(mant)))/Math.pow(10,dec(mant));
-  }
-  return "$"+rounded.toFixed(dec(rounded))+tier.s;
+  let r=Math.round(mant*Math.pow(10,dec(mant)))/Math.pow(10,dec(mant));
+  if(r>=1000&&ti<SUFFIX.length-1){tier=SUFFIX[ti+1];mant=n/Math.pow(10,tier.exp);r=Math.round(mant*Math.pow(10,dec(mant)))/Math.pow(10,dec(mant));}
+  return "$"+r.toFixed(dec(r))+tier.s;
 }
-function mutInfo(selectedSet){
-  const idxs=[...selectedSet];
-  if(idxs.length===0) return {mult:1,bestIdx:-1};
+function fmtBase(n){
+  if(!isFinite(n)||n<=0) return "$0";
+  const log=Math.log10(n); let ti=0;
+  for(let i=0;i<SUFFIX.length;i++){ if(log>=SUFFIX[i].exp-1) ti=i; else break; }
+  let tier=SUFFIX[ti],mant=n/Math.pow(10,tier.exp);
+  const dec=m=>m>=100?0:(m>=10?1:2);
+  let r=Math.round(mant*Math.pow(10,dec(mant)))/Math.pow(10,dec(mant));
+  return "$"+r.toFixed(dec(r))+(tier.s?" "+tier.s:"");
+}
+function mutInfo(sel){
+  const idxs=[...sel]; if(idxs.length===0) return {mult:1,bestIdx:-1};
   let bestIdx=-1,bestVal=-1;
   for(const i of idxs){ if(MUTATIONS[i].val>bestVal){bestVal=MUTATIONS[i].val;bestIdx=i;} }
   const sum=idxs.reduce((a,i)=>a+MUTATIONS[i].val,0);
-  const others=sum-bestVal;
-  const kicker=0.25*(others-(idxs.length-1));
-  return {mult:bestVal+kicker,bestIdx};
+  return {mult:bestVal+0.25*((sum-bestVal)-(idxs.length-1)),bestIdx};
 }
-function buildMuts(container,selectedSet,onChange,exclude=[]){
+function buildMuts(container,sel,onChange,exclude=[]){
   MUTATIONS.forEach((m,i)=>{
     if(exclude.includes(i)) return;
-    const d=document.createElement('div');
-    d.className='mut'; d.dataset.i=i;
-    d.innerHTML=`<span class="dot" style="background:${m.color}"></span>
-      <span class="txt"><span class="nm">${m.name}</span><span class="vl">${m.val}×</span></span>`;
-    d.addEventListener('click',()=>{ selectedSet.has(i)?selectedSet.delete(i):selectedSet.add(i); onChange(); });
+    const d=document.createElement('div'); d.className='mut'; d.dataset.i=i;
+    d.innerHTML=`<span class="micon">${mutIcon(m.ic,m.color)}</span><span class="txt"><span class="nm">${m.name}</span><span class="vl">${m.val}×</span></span>`;
+    d.addEventListener('click',()=>{ sel.has(i)?sel.delete(i):sel.add(i); onChange(); });
     container.appendChild(d);
   });
 }
-function paintMuts(container,selectedSet,bestIdx){
-  container.querySelectorAll('.mut').forEach(d=>{
-    const i=+d.dataset.i;
-    d.classList.toggle('on',selectedSet.has(i));
-    d.classList.toggle('best',i===bestIdx&&selectedSet.size>0);
-  });
+function paintMuts(container,sel,bestIdx){
+  container.querySelectorAll('.mut').forEach(d=>{const i=+d.dataset.i;d.classList.toggle('on',sel.has(i));d.classList.toggle('best',i===bestIdx&&sel.size>0);});
 }
+function buildGrades(container,initial,onChange){
+  const state={value:initial};
+  GRADES.forEach(g=>{
+    const d=document.createElement('div'); d.className='grade'+(g.v===initial?' on':'');
+    d.dataset.v=g.v; d.style.setProperty('--gc',g.c);
+    d.innerHTML=`<span class="g-name">${g.name}</span><span class="g-mult">${g.v}×</span>`;
+    d.addEventListener('click',()=>{ state.value=g.v; container.querySelectorAll('.grade').forEach(x=>x.classList.toggle('on',+x.dataset.v===g.v)); onChange(); });
+    container.appendChild(d);
+  });
+  return state;
+}
+function buildCosmetics(container,totalEl,onChange){
+  const state={};
+  COSMETIC_SLOTS.forEach(slot=>{
+    state[slot.key]=0;
+    const cell=document.createElement('div');
+    const lab=document.createElement('div'); lab.className='cos-lab'; lab.innerHTML=`<span class="cos-ic">${icon(slot.icon)}</span>${slot.name}`;
+    const segs=document.createElement('div'); segs.className='cos-segs';
+    slot.opts.forEach(v=>{
+      const b=document.createElement('button'); b.type='button'; b.className='seg'+(v===0?' on':''); b.dataset.v=v;
+      b.textContent=v===0?'None':v+'%';
+      b.addEventListener('click',()=>{ state[slot.key]=v; segs.querySelectorAll('.seg').forEach(s=>s.classList.toggle('on',+s.dataset.v===v)); onChange(); });
+      segs.appendChild(b);
+    });
+    cell.appendChild(lab); cell.appendChild(segs); container.appendChild(cell);
+  });
+  return { total:()=>Object.values(state).reduce((a,b)=>a+b,0) };
+}
+function makeDropdown(target,opts,initial,onChange){
+  const wrap=document.createElement('div'); wrap.className='dd';
+  const btn=document.createElement('button'); btn.type='button'; btn.className='dd-btn';
+  const list=document.createElement('div'); list.className='dd-list';
+  wrap.appendChild(btn); wrap.appendChild(list);
+  let cur=initial;
+  const chev='<svg class="dd-chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>';
+  const labelFor=v=>{const o=opts.find(o=>String(o.value)===String(v));return o?o.label:'';};
+  function render(){ btn.innerHTML='<span class="dd-val">'+labelFor(cur)+'</span>'+chev; }
+  function mark(){ list.querySelectorAll('.dd-item').forEach(it=>it.classList.toggle('sel',String(it.dataset.value)===String(cur))); }
+  opts.forEach(o=>{
+    const it=document.createElement('div'); it.className='dd-item'; it.textContent=o.label; it.dataset.value=o.value;
+    it.addEventListener('click',e=>{ e.stopPropagation(); cur=o.value; render(); list.classList.remove('open'); btn.classList.remove('open'); mark(); onChange(); });
+    list.appendChild(it);
+  });
+  btn.addEventListener('click',e=>{
+    e.stopPropagation();
+    const open=list.classList.contains('open');
+    document.querySelectorAll('.dd-list.open').forEach(l=>l.classList.remove('open'));
+    document.querySelectorAll('.dd-btn.open').forEach(b=>b.classList.remove('open'));
+    if(!open){ list.classList.add('open'); btn.classList.add('open'); mark(); }
+  });
+  render(); mark(); target.appendChild(wrap);
+  return { get value(){return cur;}, set value(v){cur=v;render();mark();} };
+}
+document.addEventListener('click',()=>{document.querySelectorAll('.dd-list.open').forEach(l=>l.classList.remove('open'));document.querySelectorAll('.dd-btn.open').forEach(b=>b.classList.remove('open'));});
 
-// build dropdowns
-fillMag(document.getElementById('baseMag'));
-fillMag(document.getElementById('fBestMag'));
-document.getElementById('baseMag').value=36;
-document.getElementById('fBestMag').value=42;
-
-const gradeSel=document.getElementById('grade');
-GRADES.forEach(g=>{const o=document.createElement('option');o.value=g.v;o.textContent=`${g.name} - ${g.v}×`;gradeSel.appendChild(o);});
-gradeSel.value=1; // F default
-
-const presetSel=document.getElementById('preset');
-PRESETS.forEach((p,i)=>{const o=document.createElement('option');o.value=i;o.textContent=p.label;presetSel.appendChild(o);});
-presetSel.value=2;
+const magOpts=SUFFIX.map(u=>({value:u.exp,label:u.s===""?"— (ones)":u.s}));
 
 // ---------- MAIN ----------
 let lastMainIncome=0;
 const mainSel=new Set();
 buildMuts(document.getElementById('muts'),mainSel,updateMain);
+const mainGrade=buildGrades(document.getElementById('grades'),1,updateMain);
+const mainCos=buildCosmetics(document.getElementById('cosGrid'),null,updateMain);
+const presetDD=makeDropdown(document.getElementById('presetDD'),PRESETS.map((p,i)=>({value:i,label:p.label})),2,updateMain);
+const baseMagDD=makeDropdown(document.getElementById('baseMagDD'),magOpts,36,updateMain);
 
 function getBase(){
   if(document.getElementById('customBase').checked){
-    const num=parseFloat(document.getElementById('base').value)||0;
-    const exp=parseFloat(document.getElementById('baseMag').value)||0;
-    return num*Math.pow(10,exp);
+    return (parseFloat(document.getElementById('base').value)||0)*Math.pow(10,+baseMagDD.value);
   }
-  const p=PRESETS[+presetSel.value];
-  return p.num*Math.pow(10,p.exp);
+  const p=PRESETS[+presetDD.value]; return p.num*Math.pow(10,p.exp);
 }
 function updateMain(){
   const level=Math.max(0,parseFloat(document.getElementById('level').value)||0);
   const base=getBase();
-  const grade=parseFloat(document.getElementById('grade').value)||1;
-  const cos=parseFloat(document.getElementById('cos').value)||0;
+  const grade=mainGrade.value;
+  const cos=mainCos.total();
   const cash=document.getElementById('cash').checked?2:1;
   const vip=document.getElementById('vip').checked?1.2:1;
   const {mult,bestIdx}=mutInfo(mainSel);
   lastMainIncome=Math.floor((level+1)*base*mult*grade*(1+cos/100)*cash*vip);
-
+  document.getElementById('cosTotal').textContent='+'+cos+'%';
   paintMuts(document.getElementById('muts'),mainSel,bestIdx);
   const out=document.getElementById('out');
   out.innerHTML=fmt(lastMainIncome)+'<span class="per">/s</span>';
   out.classList.add('pulse');setTimeout(()=>out.classList.remove('pulse'),120);
   document.getElementById('multline').innerHTML=
     mainSel.size===0?'No mutations - multiplier <b>1×</b>':`Mutation multiplier <b>${Math.round(mult*100)/100}×</b>`;
-  updateFate(); // fate may inherit this
+  updateFate();
 }
 document.getElementById('customBase').addEventListener('change',e=>{
   document.getElementById('presetWrap').classList.toggle('hidden',e.target.checked);
   document.getElementById('customWrap').classList.toggle('hidden',!e.target.checked);
   updateMain();
 });
-['level','base','baseMag','preset','grade','cos','cash','vip'].forEach(id=>
-  document.getElementById(id).addEventListener('input',updateMain));
+['level','base','cash','vip'].forEach(id=>document.getElementById(id).addEventListener('input',updateMain));
 
 // ---------- WOVEN FATE ----------
 const fateSel=new Set();
 buildMuts(document.getElementById('fMuts'),fateSel,updateFate,[ADMIN_IDX]);
-
+const fBestMagDD=makeDropdown(document.getElementById('fBestMagDD'),magOpts,42,updateFate);
 function getFateBest(){
   if(document.getElementById('fCustom').checked){
-    const num=parseFloat(document.getElementById('fBest').value)||0;
-    const exp=parseFloat(document.getElementById('fBestMag').value)||0;
-    return num*Math.pow(10,exp);
+    return (parseFloat(document.getElementById('fBest').value)||0)*Math.pow(10,+fBestMagDD.value);
   }
   return lastMainIncome;
 }
@@ -382,7 +604,6 @@ function updateFate(){
   const best=getFateBest();
   const {mult,bestIdx}=mutInfo(fateSel);
   const income=Math.floor((level+1)*best*mult);
-
   document.getElementById('fInheritVal').textContent=fmt(best)+'/s';
   paintMuts(document.getElementById('fMuts'),fateSel,bestIdx);
   const out=document.getElementById('fOut');
@@ -396,11 +617,56 @@ document.getElementById('fCustom').addEventListener('change',e=>{
   document.getElementById('fCustomWrap').classList.toggle('hidden',!e.target.checked);
   updateFate();
 });
-['fLevel','fBest','fBestMag'].forEach(id=>
-  document.getElementById(id).addEventListener('input',updateFate));
+['fLevel','fBest'].forEach(id=>document.getElementById(id).addEventListener('input',updateFate));
 
+// ---------- BASE FINDER ----------
+const baseSel=new Set();
+buildMuts(document.getElementById('bMuts'),baseSel,updateBase);
+const baseGrade=buildGrades(document.getElementById('bGrades'),1,updateBase);
+const baseCos=buildCosmetics(document.getElementById('bCosGrid'),null,updateBase);
+const bIncomeMagDD=makeDropdown(document.getElementById('bIncomeMagDD'),magOpts,0,updateBase);
+function updateBase(){
+  const income=(parseFloat(document.getElementById('bIncome').value)||0)*Math.pow(10,+bIncomeMagDD.value);
+  const level=Math.max(0,parseFloat(document.getElementById('bLevel').value)||0);
+  const grade=baseGrade.value;
+  const cos=baseCos.total();
+  const cash=document.getElementById('bCash').checked?2:1;
+  const vip=document.getElementById('bVip').checked?1.2:1;
+  const {mult,bestIdx}=mutInfo(baseSel);
+  const denom=(level+1)*mult*grade*(1+cos/100)*cash*vip;
+  const base=denom>0?income/denom:0;
+  document.getElementById('bCosTotal').textContent='+'+cos+'%';
+  paintMuts(document.getElementById('bMuts'),baseSel,bestIdx);
+  const out=document.getElementById('bOut');
+  out.innerHTML=fmtBase(base)+'<span class="per">/lvl</span>';
+  out.classList.add('pulse');setTimeout(()=>out.classList.remove('pulse'),120);
+  document.getElementById('bMultline').innerHTML=
+    baseSel.size===0?'No mutations - multiplier <b>1×</b>':`Mutation multiplier <b>${Math.round(mult*100)/100}×</b>`;
+}
+['bIncome','bLevel','bCash','bVip'].forEach(id=>document.getElementById(id).addEventListener('input',updateBase));
+
+// ---------- TABS ----------
+document.querySelectorAll('.tab').forEach(btn=>{
+  btn.addEventListener('click',()=>{
+    document.querySelectorAll('.tab').forEach(b=>b.classList.remove('active'));
+    btn.classList.add('active');
+    const t=btn.dataset.tab;
+    document.getElementById('tab-income').classList.toggle('hidden',t!=='income');
+    document.getElementById('fateBlock').classList.toggle('hidden',t!=='income');
+    document.getElementById('tab-base').classList.toggle('hidden',t!=='base');
+  });
+});
+
+// ---------- THEME ----------
+const root=document.documentElement, themeBtn=document.getElementById('themeToggle');
+function setTheme(t){ root.setAttribute('data-theme',t); themeBtn.innerHTML=icon(t==='dark'?'sun':'moon'); try{localStorage.setItem('dumplingTheme',t);}catch(e){} }
+let savedTheme='dark'; try{savedTheme=localStorage.getItem('dumplingTheme')||'dark';}catch(e){}
+setTheme(savedTheme);
+themeBtn.addEventListener('click',()=>setTheme(root.getAttribute('data-theme')==='dark'?'light':'dark'));
+
+initIcons();
 updateMain();
-
+updateBase();
 </script>
 </body>
 </html>
