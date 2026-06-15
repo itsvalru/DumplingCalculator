@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dumpling Income Calculator</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg1:#ffe3f1; --bg2:#e7e9ff; --bg3:#dff7ff;
+    --card:#ffffff; --ink:#3a2b4d; --muted:#9286a3; --line:#f0e6f4;
+    --grape:#9b30d9; --grape-soft:#f6ebff;
+    --money:#0fbf5e; --money-dark:#0a7d3e;
+    --fate:#ff7a18; --fate-dark:#c8500a; --fate-soft:#fff1e6;
+    --shadow:0 10px 30px rgba(120,60,150,.12);
+    --shadow-sm:0 4px 12px rgba(120,60,150,.10);
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    font-family:'Nunito',system-ui,sans-serif;color:var(--ink);
+    background:
+      radial-gradient(1200px 700px at 15% -10%, var(--bg1), transparent 60%),
+      radial-gradient(1100px 800px at 100% 0%, var(--bg3), transparent 55%),
+      linear-gradient(160deg,var(--bg2),#fbf3ff 70%);
+    min-height:100vh;padding:28px 16px 60px;
+  }
+  .wrap{max-width:880px;margin:0 auto;}
+  header{text-align:center;margin-bottom:22px;}
+  .eyebrow{font-family:'Fredoka',sans-serif;font-weight:600;letter-spacing:.5px;color:var(--grape);text-transform:uppercase;font-size:13px;opacity:.85;}
+  h1{font-family:'Fredoka',sans-serif;font-weight:700;font-size:clamp(30px,6vw,46px);margin:.1em 0 .15em;color:var(--ink);line-height:1.02;}
+  .sub{color:var(--muted);font-size:15px;font-weight:600;}
+
+  .readout{margin:22px 0 26px;border-radius:26px;padding:30px 24px 26px;background:linear-gradient(170deg,#fff,#fdf5ff);box-shadow:var(--shadow);text-align:center;position:relative;overflow:hidden;border:1px solid #fbeaff;}
+  .readout:before{content:"";position:absolute;inset:0;pointer-events:none;background:radial-gradient(420px 160px at 50% -40px, rgba(155,48,217,.10), transparent 70%);}
+  .readout .label{font-family:'Fredoka',sans-serif;font-weight:500;color:var(--muted);font-size:14px;letter-spacing:.6px;text-transform:uppercase;}
+  .money{font-family:'Fredoka',sans-serif;font-weight:700;font-size:clamp(40px,11vw,76px);line-height:1;margin:6px 0 2px;color:var(--money);-webkit-text-stroke:2px var(--money-dark);paint-order:stroke fill;text-shadow:0 4px 0 rgba(10,125,62,.18);transition:transform .12s ease;}
+  .money.pulse{transform:scale(1.04);}
+  .money .per{font-size:.42em;-webkit-text-stroke:1px var(--money-dark);}
+  .mult-line{color:var(--muted);font-weight:700;font-size:14px;margin-top:8px;}
+  .mult-line b{color:var(--grape);}
+
+  .grid{display:grid;grid-template-columns:1fr 1fr;gap:18px;}
+  @media (max-width:680px){.grid{grid-template-columns:1fr;}}
+  .card{background:var(--card);border-radius:20px;padding:20px;box-shadow:var(--shadow-sm);border:1px solid var(--line);}
+  .card h2{font-family:'Fredoka',sans-serif;font-weight:600;font-size:16px;margin:0 0 14px;color:var(--grape);display:flex;align-items:center;gap:8px;}
+  .card.span2{grid-column:1/-1;}
+
+  label.field{display:block;margin-bottom:14px;}
+  label.field:last-child{margin-bottom:0;}
+  .field .cap{font-weight:700;font-size:13px;color:var(--ink);margin-bottom:6px;display:block;}
+  input[type=number],select{width:100%;font-family:'Nunito',sans-serif;font-weight:700;font-size:15px;color:var(--ink);background:#fbf7fe;border:2px solid var(--line);border-radius:12px;padding:11px 12px;outline:none;transition:border-color .15s,box-shadow .15s;}
+  input[type=number]:focus,select:focus{border-color:var(--grape);box-shadow:0 0 0 4px rgba(155,48,217,.12);}
+  .row2{display:flex;gap:10px;} .row2 input{flex:2;} .row2 select{flex:1;}
+  .hidden{display:none !important;}
+
+  .muts{display:grid;grid-template-columns:repeat(auto-fill,minmax(118px,1fr));gap:10px;}
+  .mut{display:flex;align-items:center;gap:9px;cursor:pointer;user-select:none;border:2px solid var(--line);border-radius:13px;padding:9px 11px;background:#fdfaff;transition:all .14s ease;position:relative;}
+  .mut:hover{border-color:#ecd6f7;}
+  .mut.on{border-color:var(--grape);background:var(--grape-soft);box-shadow:0 3px 10px rgba(155,48,217,.13);}
+  .mut .dot{width:18px;height:18px;border-radius:50%;flex:none;box-shadow:inset 0 -2px 3px rgba(0,0,0,.18),0 1px 2px rgba(0,0,0,.15);}
+  .mut .nm{font-weight:800;font-size:13px;line-height:1.05;}
+  .mut .vl{font-weight:700;font-size:11px;color:var(--muted);}
+  .mut .txt{display:flex;flex-direction:column;}
+  .mut.best:after{content:"BEST";position:absolute;top:-8px;right:-6px;background:var(--money);color:#fff;font-family:'Fredoka',sans-serif;font-size:9px;font-weight:600;padding:2px 6px;border-radius:8px;letter-spacing:.5px;box-shadow:0 2px 5px rgba(15,191,94,.4);}
+  .fate .mut.on{border-color:var(--fate);background:var(--fate-soft);box-shadow:0 3px 10px rgba(255,122,24,.16);}
+  .fate .mut.best:after{background:var(--fate);box-shadow:0 2px 5px rgba(255,122,24,.4);}
+
+  .toggles{display:flex;flex-direction:column;gap:12px;}
+  .tog{display:flex;align-items:center;justify-content:space-between;gap:12px;}
+  .tog .tg-l{font-weight:800;font-size:14px;}
+  .tog .tg-s{font-weight:700;font-size:12px;color:var(--muted);}
+  .switch{position:relative;width:50px;height:28px;flex:none;}
+  .switch input{opacity:0;width:0;height:0;}
+  .slider{position:absolute;inset:0;background:#e3d5ee;border-radius:99px;transition:.18s;cursor:pointer;}
+  .slider:before{content:"";position:absolute;width:22px;height:22px;left:3px;top:3px;background:#fff;border-radius:50%;transition:.18s;box-shadow:0 2px 4px rgba(0,0,0,.18);}
+  .switch input:checked + .slider{background:var(--money);}
+  .switch input:checked + .slider:before{transform:translateX(22px);}
+  .fate .switch input:checked + .slider{background:var(--fate);}
+
+  .hint{font-size:12.5px;color:var(--muted);font-weight:600;margin-top:10px;line-height:1.5;}
+  .hint code{background:var(--grape-soft);color:var(--grape);padding:1px 6px;border-radius:6px;font-family:'Fredoka',sans-serif;font-size:12px;}
+
+  .inherit{display:flex;flex-direction:column;gap:2px;background:var(--fate-soft);border:2px dashed #ffd2ad;border-radius:12px;padding:11px 13px;}
+  .inherit .ih-cap{font-weight:700;font-size:12px;color:var(--fate-dark);text-transform:uppercase;letter-spacing:.4px;}
+  .inherit .ih-val{font-family:'Fredoka',sans-serif;font-weight:600;font-size:22px;color:var(--fate);-webkit-text-stroke:1px var(--fate-dark);}
+
+  .divider{display:flex;align-items:center;gap:14px;margin:40px 0 4px;}
+  .divider:before,.divider:after{content:"";height:2px;flex:1;background:linear-gradient(90deg,transparent,#f0d9c4,transparent);}
+  .divider span{font-family:'Fredoka',sans-serif;font-weight:600;color:var(--fate-dark);text-transform:uppercase;letter-spacing:1px;font-size:13px;}
+  .fate .readout{background:linear-gradient(170deg,#fff,#fff7f0);border-color:#ffe6d2;}
+  .fate .readout:before{background:radial-gradient(420px 160px at 50% -40px, rgba(255,122,24,.10), transparent 70%);}
+  .fate .money{color:var(--fate);-webkit-text-stroke:2px var(--fate-dark);text-shadow:0 4px 0 rgba(200,80,10,.18);}
+  .fate .money .per{-webkit-text-stroke:1px var(--fate-dark);}
+  .fate .mult-line b{color:var(--fate-dark);}
+  .fate .card h2{color:var(--fate-dark);}
+  .fate input:focus,.fate select:focus{border-color:var(--fate);box-shadow:0 0 0 4px rgba(255,122,24,.12);}
+  .fate .hint code{background:var(--fate-soft);color:var(--fate-dark);}
+  .fate-intro{color:var(--muted);font-weight:600;font-size:14px;text-align:center;margin:2px 0 0;}
+
+  footer{text-align:center;color:var(--muted);font-size:12.5px;font-weight:700;margin-top:30px;}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header>
+    <div class="eyebrow">Squishy Idle</div>
+    <h1>Dumpling Income Calculator</h1>
+    <div class="sub">Set it up, watch the cash per second roll in.</div>
+  </header>
+
+  <div class="readout">
+    <div class="label">Income per second</div>
+    <div class="money" id="out">$0<span class="per">/s</span></div>
+    <div class="mult-line" id="multline">Pick a setup to begin</div>
+  </div>
+
+  <div class="grid">
+
+    <div class="card">
+      <h2>⚙️ The basics</h2>
+      <label class="field">
+        <span class="cap">Level</span>
+        <input type="number" id="level" min="1" value="1">
+      </label>
+
+      <div class="tog" style="margin-bottom:12px;">
+        <div><div class="tg-l">Custom base income</div><div class="tg-s">Type your own per-level value</div></div>
+        <label class="switch"><input type="checkbox" id="customBase"><span class="slider"></span></label>
+      </div>
+
+      <label class="field" id="presetWrap">
+        <span class="cap">Dumpling</span>
+        <select id="preset"></select>
+      </label>
+
+      <label class="field hidden" id="customWrap">
+        <span class="cap">Base income per level</span>
+        <div class="row2">
+          <input type="number" id="base" min="0" step="any" value="0.75">
+          <select id="baseMag"></select>
+        </div>
+      </label>
+
+      <div class="hint">Presets use the raw base (passes added by the toggles). Flip the switch to enter any base.</div>
+    </div>
+
+    <div class="card">
+      <h2>🏅 Grade & extras</h2>
+      <label class="field">
+        <span class="cap">Grade</span>
+        <select id="grade"></select>
+      </label>
+      <label class="field">
+        <span class="cap">Cosmetic bonus (%)</span>
+        <input type="number" id="cos" min="0" step="any" value="0">
+      </label>
+      <div class="toggles">
+        <div class="tog">
+          <div><div class="tg-l">2× Cash pass</div><div class="tg-s">Doubles income</div></div>
+          <label class="switch"><input type="checkbox" id="cash"><span class="slider"></span></label>
+        </div>
+        <div class="tog">
+          <div><div class="tg-l">VIP pass</div><div class="tg-s">+20% income</div></div>
+          <label class="switch"><input type="checkbox" id="vip"><span class="slider"></span></label>
+        </div>
+      </div>
+    </div>
+
+    <div class="card span2">
+      <h2>💎 Mutations</h2>
+      <div class="muts" id="muts"></div>
+      <div class="hint">Your strongest mutation counts fully. Every other one adds only <code>(value − 1) ÷ 4</code>. The “best” tag shows which one is carrying.</div>
+    </div>
+
+  </div>
+
+  <!-- ============ WOVEN FATE ============ -->
+  <div class="fate">
+    <div class="divider"><span>🧵 Woven Fate</span></div>
+    <p class="fate-intro">A Woven Fate dumpling inherits your <b>best dumpling's whole income</b>, passes, grade and cosmetics already baked in. By default it uses the dumpling above. Admin can't roll on Woven Fate.</p>
+
+    <div class="readout">
+      <div class="label">Woven Fate income per second</div>
+      <div class="money" id="fOut">$0<span class="per">/s</span></div>
+      <div class="mult-line" id="fMultline">Pick a setup to begin</div>
+    </div>
+
+    <div class="grid">
+      <div class="card">
+        <h2>🧵 Setup</h2>
+        <label class="field">
+          <span class="cap">Level</span>
+          <input type="number" id="fLevel" min="1" value="1">
+        </label>
+
+        <div class="tog" style="margin-bottom:12px;">
+          <div><div class="tg-l">Custom best income</div><div class="tg-s">Override the dumpling above</div></div>
+          <label class="switch"><input type="checkbox" id="fCustom"><span class="slider"></span></label>
+        </div>
+
+        <div class="field inherit" id="fInheritWrap">
+          <span class="ih-cap">Inheriting from above</span>
+          <span class="ih-val" id="fInheritVal">$0/s</span>
+        </div>
+
+        <label class="field hidden" id="fCustomWrap">
+          <span class="cap">Income of your best dumpling</span>
+          <div class="row2">
+            <input type="number" id="fBest" min="0" step="any" value="90">
+            <select id="fBestMag"></select>
+          </div>
+        </label>
+      </div>
+
+      <div class="card">
+        <h2>💎 Its mutations</h2>
+        <div class="muts" id="fMuts"></div>
+      </div>
+    </div>
+  </div>
+
+  <footer></footer>
+</div>
+
+<script>
+// ---- data ----
+const MUTATIONS = [
+  {name:"Gold",      val:5,   color:"#ffd23f"},
+  {name:"Diamond",   val:15,  color:"#7fe3ff"},
+  {name:"Ruby",      val:45,  color:"#ff4d6d"},
+  {name:"Bubblegum", val:70,  color:"#ff9ad5"},
+  {name:"Lightning", val:90,  color:"#ffe14d"},
+  {name:"Cloud",     val:90,  color:"#d7e6f5"},
+  {name:"Blossom",   val:120, color:"#ff7fa8"},
+  {name:"Admin",     val:150, color:"#2b2b34"},
+  {name:"Heart",     val:300, color:"#ff2d6f"},
+];
+const ADMIN_IDX = 7; // not allowed on Woven Fate
+
+const GRADES = [
+  {name:"F",  v:1},   {name:"E",  v:1.15}, {name:"D", v:1.25},
+  {name:"C",  v:1.5}, {name:"B",  v:2},    {name:"A", v:3},
+  {name:"S",  v:5},   {name:"S+", v:7.5},  {name:"SS",v:10},
+  {name:"SR", v:15},  {name:"UR", v:20},
+];
+
+const PRESETS = [
+  {label:"Brown Uncommon Squishy", num:10,   exp:0},
+  {label:"Crystal Princess",       num:0.25, exp:36},
+  {label:"Diamond Crown Princess", num:0.75, exp:36},
+];
+
+const SUFFIX = [
+  {s:"",exp:0},{s:"K",exp:3},{s:"M",exp:6},{s:"B",exp:9},{s:"T",exp:12},
+  {s:"Qa",exp:15},{s:"Qi",exp:18},{s:"Sx",exp:21},{s:"Sp",exp:24},{s:"Oc",exp:27},
+  {s:"No",exp:30},{s:"Dc",exp:33},{s:"Ud",exp:36},{s:"Dd",exp:39},{s:"Td",exp:42},
+  {s:"Qad",exp:45},{s:"Qid",exp:48},{s:"Sxd",exp:51},{s:"Spd",exp:54},{s:"Ocd",exp:57},
+  {s:"Nod",exp:60},{s:"V",exp:63},
+];
+
+// ---- helpers ----
+function fillMag(sel){SUFFIX.forEach(u=>{const o=document.createElement('option');o.value=u.exp;o.textContent=u.s===""?"-":u.s;sel.appendChild(o);});}
+function fmt(n){
+  if(!isFinite(n)||n<=0) return "$0";
+  const log=Math.log10(n);
+  let ti=0;
+  for(let i=0;i<SUFFIX.length;i++){ if(log>=SUFFIX[i].exp) ti=i; else break; }
+  let tier=SUFFIX[ti];
+  let mant=n/Math.pow(10,tier.exp);            // in [1,1000)
+  // round to 3 significant figures (4th digit decides)
+  const dec=m=>m>=100?0:(m>=10?1:2);
+  let rounded=Math.round(mant*Math.pow(10,dec(mant)))/Math.pow(10,dec(mant));
+  // carry up a tier if rounding pushed mantissa to 1000 (e.g. 999.6 -> 1.00 next)
+  if(rounded>=1000 && ti<SUFFIX.length-1){
+    tier=SUFFIX[ti+1];
+    mant=n/Math.pow(10,tier.exp);
+    rounded=Math.round(mant*Math.pow(10,dec(mant)))/Math.pow(10,dec(mant));
+  }
+  return "$"+rounded.toFixed(dec(rounded))+tier.s;
+}
+function mutInfo(selectedSet){
+  const idxs=[...selectedSet];
+  if(idxs.length===0) return {mult:1,bestIdx:-1};
+  let bestIdx=-1,bestVal=-1;
+  for(const i of idxs){ if(MUTATIONS[i].val>bestVal){bestVal=MUTATIONS[i].val;bestIdx=i;} }
+  const sum=idxs.reduce((a,i)=>a+MUTATIONS[i].val,0);
+  const others=sum-bestVal;
+  const kicker=0.25*(others-(idxs.length-1));
+  return {mult:bestVal+kicker,bestIdx};
+}
+function buildMuts(container,selectedSet,onChange,exclude=[]){
+  MUTATIONS.forEach((m,i)=>{
+    if(exclude.includes(i)) return;
+    const d=document.createElement('div');
+    d.className='mut'; d.dataset.i=i;
+    d.innerHTML=`<span class="dot" style="background:${m.color}"></span>
+      <span class="txt"><span class="nm">${m.name}</span><span class="vl">${m.val}×</span></span>`;
+    d.addEventListener('click',()=>{ selectedSet.has(i)?selectedSet.delete(i):selectedSet.add(i); onChange(); });
+    container.appendChild(d);
+  });
+}
+function paintMuts(container,selectedSet,bestIdx){
+  container.querySelectorAll('.mut').forEach(d=>{
+    const i=+d.dataset.i;
+    d.classList.toggle('on',selectedSet.has(i));
+    d.classList.toggle('best',i===bestIdx&&selectedSet.size>0);
+  });
+}
+
+// build dropdowns
+fillMag(document.getElementById('baseMag'));
+fillMag(document.getElementById('fBestMag'));
+document.getElementById('baseMag').value=36;
+document.getElementById('fBestMag').value=42;
+
+const gradeSel=document.getElementById('grade');
+GRADES.forEach(g=>{const o=document.createElement('option');o.value=g.v;o.textContent=`${g.name} - ${g.v}×`;gradeSel.appendChild(o);});
+gradeSel.value=1; // F default
+
+const presetSel=document.getElementById('preset');
+PRESETS.forEach((p,i)=>{const o=document.createElement('option');o.value=i;o.textContent=p.label;presetSel.appendChild(o);});
+presetSel.value=2;
+
+// ---------- MAIN ----------
+let lastMainIncome=0;
+const mainSel=new Set();
+buildMuts(document.getElementById('muts'),mainSel,updateMain);
+
+function getBase(){
+  if(document.getElementById('customBase').checked){
+    const num=parseFloat(document.getElementById('base').value)||0;
+    const exp=parseFloat(document.getElementById('baseMag').value)||0;
+    return num*Math.pow(10,exp);
+  }
+  const p=PRESETS[+presetSel.value];
+  return p.num*Math.pow(10,p.exp);
+}
+function updateMain(){
+  const level=Math.max(0,parseFloat(document.getElementById('level').value)||0);
+  const base=getBase();
+  const grade=parseFloat(document.getElementById('grade').value)||1;
+  const cos=parseFloat(document.getElementById('cos').value)||0;
+  const cash=document.getElementById('cash').checked?2:1;
+  const vip=document.getElementById('vip').checked?1.2:1;
+  const {mult,bestIdx}=mutInfo(mainSel);
+  lastMainIncome=Math.floor((level+1)*base*mult*grade*(1+cos/100)*cash*vip);
+
+  paintMuts(document.getElementById('muts'),mainSel,bestIdx);
+  const out=document.getElementById('out');
+  out.innerHTML=fmt(lastMainIncome)+'<span class="per">/s</span>';
+  out.classList.add('pulse');setTimeout(()=>out.classList.remove('pulse'),120);
+  document.getElementById('multline').innerHTML=
+    mainSel.size===0?'No mutations - multiplier <b>1×</b>':`Mutation multiplier <b>${Math.round(mult*100)/100}×</b>`;
+  updateFate(); // fate may inherit this
+}
+document.getElementById('customBase').addEventListener('change',e=>{
+  document.getElementById('presetWrap').classList.toggle('hidden',e.target.checked);
+  document.getElementById('customWrap').classList.toggle('hidden',!e.target.checked);
+  updateMain();
+});
+['level','base','baseMag','preset','grade','cos','cash','vip'].forEach(id=>
+  document.getElementById(id).addEventListener('input',updateMain));
+
+// ---------- WOVEN FATE ----------
+const fateSel=new Set();
+buildMuts(document.getElementById('fMuts'),fateSel,updateFate,[ADMIN_IDX]);
+
+function getFateBest(){
+  if(document.getElementById('fCustom').checked){
+    const num=parseFloat(document.getElementById('fBest').value)||0;
+    const exp=parseFloat(document.getElementById('fBestMag').value)||0;
+    return num*Math.pow(10,exp);
+  }
+  return lastMainIncome;
+}
+function updateFate(){
+  const level=Math.max(0,parseFloat(document.getElementById('fLevel').value)||0);
+  const best=getFateBest();
+  const {mult,bestIdx}=mutInfo(fateSel);
+  const income=Math.floor((level+1)*best*mult);
+
+  document.getElementById('fInheritVal').textContent=fmt(best)+'/s';
+  paintMuts(document.getElementById('fMuts'),fateSel,bestIdx);
+  const out=document.getElementById('fOut');
+  out.innerHTML=fmt(income)+'<span class="per">/s</span>';
+  out.classList.add('pulse');setTimeout(()=>out.classList.remove('pulse'),120);
+  document.getElementById('fMultline').innerHTML=
+    fateSel.size===0?'No mutations - multiplier <b>1×</b>':`Mutation multiplier <b>${Math.round(mult*100)/100}×</b>`;
+}
+document.getElementById('fCustom').addEventListener('change',e=>{
+  document.getElementById('fInheritWrap').classList.toggle('hidden',e.target.checked);
+  document.getElementById('fCustomWrap').classList.toggle('hidden',!e.target.checked);
+  updateFate();
+});
+['fLevel','fBest','fBestMag'].forEach(id=>
+  document.getElementById(id).addEventListener('input',updateFate));
+
+updateMain();
+
+</script>
+</body>
+</html>
