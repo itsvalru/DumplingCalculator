@@ -127,11 +127,12 @@
   .grade.on .g-mult{color:var(--ink);}
 
   /* cosmetic slots */
-  .cos-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px 26px;}
-  @media (max-width:560px){.cos-grid{grid-template-columns:1fr;}}
-  .cos-lab{font-weight:800;font-size:13px;margin-bottom:7px;display:flex;align-items:center;gap:7px;color:var(--ink);}
+  .cos-grid{display:flex;flex-direction:column;gap:14px;}
+  .cos-slot{display:flex;align-items:center;gap:14px;}
+  .cos-lab{width:84px;flex:none;font-weight:800;font-size:13px;display:flex;align-items:center;gap:7px;color:var(--ink);}
+  @media (max-width:560px){.cos-slot{flex-direction:column;align-items:stretch;gap:7px;}.cos-lab{width:auto;}}
   .cos-ic{font-size:15px;}
-  .cos-segs{display:flex;gap:6px;flex-wrap:wrap;}
+  .cos-segs{display:flex;gap:6px;flex-wrap:wrap;flex:1;}
   .seg{font-family:'Nunito',sans-serif;font-weight:700;font-size:12.5px;color:var(--muted);background:var(--chip-bg);border:2px solid var(--line);border-radius:10px;padding:7px 0;cursor:pointer;transition:all .14s;flex:1;min-width:46px;text-align:center;}
   .seg:hover{border-color:var(--grape);color:var(--ink);}
   .seg.on{color:#fff;background:linear-gradient(135deg,var(--grape),var(--grape-dark));border-color:transparent;box-shadow:0 4px 10px rgba(155,48,217,.28);}
@@ -438,7 +439,6 @@ const GRADES = [
 const COSMETIC_SLOTS = [
   {key:"head",  name:"Head",   icon:"crown",   opts:[0,5,10,20,200]},
   {key:"body",  name:"Body",   icon:"shirt",   opts:[0,5,10,20,200]},
-  {key:"weapon",name:"Weapon", icon:"sword",   opts:[0,20,60,200]},
   {key:"tail",  name:"Tail",   icon:"feather", opts:[0,5,10,20,200]},
 ];
 const PRESETS = [
@@ -507,7 +507,7 @@ function buildCosmetics(container,totalEl,onChange){
   const state={};
   COSMETIC_SLOTS.forEach(slot=>{
     state[slot.key]=0;
-    const cell=document.createElement('div');
+    const cell=document.createElement('div'); cell.className='cos-slot';
     const lab=document.createElement('div'); lab.className='cos-lab'; lab.innerHTML=`<span class="cos-ic">${icon(slot.icon)}</span>${slot.name}`;
     const segs=document.createElement('div'); segs.className='cos-segs';
     slot.opts.forEach(v=>{
