@@ -468,7 +468,9 @@ const MUTATIONS = [
   {name:"Admin",val:150,ic:"burst",color:"#2f3b48"},
   {name:"Heart",val:300,ic:"heart",color:"#ff3a5c"},
   {name:"Meteor",val:175,ic:"galaxy",color:"#8b3df0"},
+  {name:"UFO",val:250,ic:"ufo",color:"#3aa6ee"},
 ];
+MUTATIONS.sort((a,b)=>a.val-b.val);
 function mutIcon(type,c){
   const OL='#1c1430', hi='rgba(255,255,255,.34)';
   const S=s=>'<svg viewBox="0 0 24 24" fill="none">'+s+'</svg>';
@@ -520,10 +522,18 @@ function mutIcon(type,c){
       '<path d="M18 4.4 18.55 6.25 20.4 6.8 18.55 7.35 18 9.2 17.45 7.35 15.6 6.8 17.45 6.25Z" fill="#fff" stroke="'+OL+'" stroke-width=".5" stroke-linejoin="round"/>'+
       '<path d="M6.6 15.2 6.95 16.35 8.1 16.7 6.95 17.05 6.6 18.2 6.25 17.05 5.1 16.7 6.25 16.35Z" fill="#fff"/>'+
       '<circle cx="4.7" cy="9.2" r=".8" fill="#fff"/>');
+    case 'ufo': return S(
+      '<ellipse cx="12" cy="15" rx="10" ry="3.7" fill="#cdd6e2" stroke="'+OL+'" stroke-width="1.7"/>'+
+      '<path d="M12 15c-3.7 0-6.8-.9-8.6-2.2 1.9-1 4.9-1.5 8.6-1.5s6.7.5 8.6 1.5C18.8 14.1 15.7 15 12 15Z" fill="#eef3f8"/>'+
+      '<path d="M6 12.4a6 6.6 0 0 1 12 0Z" fill="'+c+'" stroke="'+OL+'" stroke-width="1.7" stroke-linejoin="round"/>'+
+      '<ellipse cx="14.3" cy="8.6" rx="1.4" ry="2" fill="rgba(255,255,255,.8)" transform="rotate(22 14.3 8.6)"/>'+
+      '<circle cx="6.2" cy="15.4" r=".75" fill="'+c+'"/>'+
+      '<circle cx="12" cy="16.2" r=".75" fill="'+c+'"/>'+
+      '<circle cx="17.8" cy="15.4" r=".75" fill="'+c+'"/>');
   }
   return '';
 }
-const ADMIN_IDX = 7;
+const ADMIN_IDX = MUTATIONS.findIndex(m=>m.name==='Admin');
 const GRADES = [
   {name:"F",v:1,c:"#c2c2cf"},{name:"E",v:1.15,c:"#5fd66b"},{name:"D",v:1.25,c:"#4db8ff"},
   {name:"C",v:1.5,c:"#b07fff"},{name:"B",v:2,c:"#ffc23f"},{name:"A",v:3,c:"#ff7a33"},
@@ -788,6 +798,8 @@ function updateBase(){
 
 // ---------- SHARE / PRESET ----------
 const $id=id=>document.getElementById(id);
+const mutsToNames=set=>[...set].map(i=>MUTATIONS[i]&&MUTATIONS[i].name).filter(Boolean);
+const namesToIdx=arr=>(arr||[]).map(x=>typeof x==='number'?x:MUTATIONS.findIndex(m=>m.name===x)).filter(i=>i>=0);
 function getPreset(){
   return {
     v:1,
@@ -801,13 +813,13 @@ function getPreset(){
     vip:$id('vip').checked?1:0,
     cos:mainCos.get(),
     pets:mainPets.get(),
-    muts:[...mainSel],
+    muts:mutsToNames(mainSel),
     f:{
       lvl:parseFloat($id('fLevel').value)||0,
       cust:$id('fCustom').checked?1:0,
       best:parseFloat($id('fBest').value)||0,
       bm:+fBestMagDD.value,
-      muts:[...fateSel]
+      muts:mutsToNames(fateSel)
     }
   };
 }
@@ -833,14 +845,14 @@ function applyPreset(o){
   $id('vip').checked=!!o.vip;
   mainCos.set(o.cos||{});
   mainPets.load(o.pets||[]);
-  mainSel.clear(); (o.muts||[]).forEach(i=>mainSel.add(+i));
+  mainSel.clear(); namesToIdx(o.muts).forEach(i=>mainSel.add(i));
   const f=o.f||{};
   $id('fLevel').value=f.lvl!=null?f.lvl:1;
   $id('fCustom').checked=!!f.cust;
   $id('fCustom').dispatchEvent(new Event('change'));
   $id('fBest').value=f.best!=null?f.best:0;
   if(f.bm!=null) fBestMagDD.value=f.bm;
-  fateSel.clear(); (f.muts||[]).forEach(i=>{ if(+i!==ADMIN_IDX) fateSel.add(+i); });
+  fateSel.clear(); namesToIdx(f.muts).forEach(i=>{ if(i!==ADMIN_IDX) fateSel.add(i); });
   updateMain(); updateFate();
 }
 function flashStatus(msg,err){
