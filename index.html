@@ -139,6 +139,44 @@
   .cos-total{margin-top:14px;font-weight:800;font-size:13px;color:var(--muted);text-align:right;}
   .cos-total b{color:var(--grape);font-size:15px;}
 
+  /* pets */
+  .pets{display:grid;grid-template-columns:repeat(auto-fill,minmax(155px,1fr));gap:10px;}
+  .pet{border:2px solid var(--line);border-radius:14px;padding:10px 11px;background:var(--chip-bg);transition:border-color .14s,background .14s,box-shadow .14s;}
+  .pet.on{border-color:var(--pc);background:color-mix(in srgb,var(--pc) 14%,var(--card));box-shadow:0 4px 12px color-mix(in srgb,var(--pc) 30%,transparent);}
+  .pet-top{display:flex;align-items:center;gap:7px;margin-bottom:9px;}
+  .pet-dot{width:11px;height:11px;border-radius:50%;background:var(--pc);flex:none;box-shadow:0 0 0 3px color-mix(in srgb,var(--pc) 24%,transparent);}
+  .pet-nm{font-weight:800;font-size:13px;color:var(--ink);flex:1;line-height:1.05;}
+  .pet-in{display:flex;align-items:center;gap:6px;}
+  .pet-in input{flex:1;min-width:0;font-family:'Nunito',sans-serif;font-weight:700;font-size:14px;color:var(--ink);background:var(--input-bg);border:2px solid var(--line);border-radius:10px;padding:7px 9px;outline:none;transition:border-color .15s,box-shadow .15s;}
+  .pet-in input:focus{border-color:var(--pc);box-shadow:0 0 0 3px color-mix(in srgb,var(--pc) 22%,transparent);}
+  .pet-pct{font-weight:800;font-size:12px;color:var(--muted);}
+
+  /* share setup */
+  .share-row{display:flex;gap:10px;margin-bottom:10px;}
+  .share-row input{flex:1;min-width:0;font-family:'Nunito',sans-serif;font-weight:700;font-size:13px;color:var(--ink);background:var(--input-bg);border:2px solid var(--line);border-radius:12px;padding:11px 13px;outline:none;transition:border-color .15s,box-shadow .15s;}
+  .share-row input:focus{border-color:var(--grape);box-shadow:0 0 0 4px rgba(155,48,217,.15);}
+  .share-btn{font-family:'Fredoka',sans-serif;font-weight:500;font-size:14px;color:#fff;background:linear-gradient(135deg,var(--grape),var(--grape-dark));border:none;border-radius:12px;padding:0 20px;cursor:pointer;white-space:nowrap;box-shadow:0 6px 16px rgba(155,48,217,.3);transition:transform .14s;}
+  .share-btn:hover{transform:translateY(-1px);}
+  .share-btn.alt{background:linear-gradient(135deg,var(--money),var(--money-dark));box-shadow:0 6px 16px rgba(15,191,94,.3);}
+  .share-status{font-weight:800;font-size:12.5px;color:var(--money-dark);min-height:17px;margin:2px 0 4px;}
+  .share-status.err{color:#e0455e;}
+
+  /* import/export button + modal */
+  .io-btn{position:fixed;top:16px;left:16px;z-index:60;width:46px;height:46px;border-radius:50%;border:2px solid var(--line);background:var(--card);cursor:pointer;box-shadow:var(--shadow-sm);transition:transform .18s,border-color .18s;display:flex;align-items:center;justify-content:center;}
+  .io-btn:hover{transform:scale(1.1);border-color:var(--grape);}
+  .io-btn svg{width:21px;height:21px;color:var(--ink);}
+  .modal-overlay{position:fixed;inset:0;z-index:100;background:rgba(15,8,24,.58);backdrop-filter:blur(3px);display:none;align-items:center;justify-content:center;padding:18px;}
+  .modal-overlay.open{display:flex;}
+  .modal{background:var(--card);border:1px solid var(--line);border-radius:24px;box-shadow:var(--shadow);width:100%;max-width:520px;max-height:88vh;overflow:auto;padding:24px 24px 22px;}
+  .modal-head{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:4px;}
+  .modal-head h3{font-family:'Fredoka',sans-serif;font-weight:600;font-size:19px;margin:0;color:var(--ink);display:flex;align-items:center;gap:11px;}
+  .modal-ic{display:inline-flex;align-items:center;justify-content:center;width:34px;height:34px;border-radius:11px;background:var(--grape-soft);color:var(--grape);flex:none;}
+  .modal-ic svg{width:19px;height:19px;}
+  .modal-close{width:34px;height:34px;border-radius:10px;border:2px solid var(--line);background:var(--card2);color:var(--muted);font-size:22px;line-height:1;cursor:pointer;flex:none;transition:border-color .15s,color .15s;display:flex;align-items:center;justify-content:center;}
+  .modal-close:hover{border-color:var(--grape);color:var(--ink);}
+  .modal-sub{color:var(--muted);font-weight:600;font-size:13.5px;margin:0 0 14px;line-height:1.5;}
+  .modal-lab{font-family:'Fredoka',sans-serif;font-weight:600;font-size:12px;letter-spacing:.6px;text-transform:uppercase;color:var(--grape);margin:16px 0 8px;}
+
   /* toggles */
   .toggles{display:flex;flex-direction:column;gap:12px;}
   .tog{display:flex;align-items:center;justify-content:space-between;gap:12px;}
@@ -175,6 +213,7 @@
 </head>
 <body>
 <button class="theme-btn" id="themeToggle" title="Toggle theme">🌙</button>
+<button class="io-btn" id="ioToggle" data-icon="io" title="Import / export setup"></button>
 <div class="wrap">
 
   <header>
@@ -242,6 +281,13 @@
       <h2><span class="ic" data-icon="sparkles"></span>Cosmetics</h2>
       <div class="cos-grid" id="cosGrid"></div>
       <div class="cos-total">Total bonus <b id="cosTotal">+0%</b></div>
+    </div>
+
+    <div class="card span2">
+      <h2><span class="ic" data-icon="paw"></span>Pets</h2>
+      <div class="pets" id="petGrid"></div>
+      <div class="cos-total">Total pet bonus <b id="petTotal">+0%</b></div>
+      <div class="hint">Every equipped pet adds its income %, and they all stack. Duplicates level a pet up (raising its %), so just type each pet's current value. Applies as <code>×(1 + total ÷ 100)</code>.</div>
     </div>
 
     <div class="card span2">
@@ -338,6 +384,13 @@
       </div>
 
       <div class="card span2">
+        <h2><span class="ic" data-icon="paw"></span>Pets</h2>
+        <div class="pets" id="bPetGrid"></div>
+        <div class="cos-total">Total pet bonus <b id="bPetTotal">+0%</b></div>
+        <div class="hint">Match the pet income bonuses on the dumpling so the base is divided back out correctly.</div>
+      </div>
+
+      <div class="card span2">
         <h2><span class="ic" data-icon="gem"></span>Mutations</h2>
         <div class="muts" id="bMuts"></div>
         <div class="hint">Tick exactly the mutations on the dumpling. The base is found by dividing the income back out through every multiplier.</div>
@@ -346,6 +399,32 @@
   </section>
 
   <footer></footer>
+</div>
+
+<div class="modal-overlay" id="ioModal">
+  <div class="modal">
+    <div class="modal-head">
+      <h3><span class="modal-ic" data-icon="io"></span>Import / Export</h3>
+      <button class="modal-close" id="ioClose" aria-label="Close">×</button>
+    </div>
+    <p class="modal-sub">Save this Income build — level, dumpling/base, grade, passes, cosmetics, pets, mutations and the Woven Fate setup — or load one in.</p>
+
+    <div class="modal-lab">Your setup code</div>
+    <div class="share-row">
+      <input type="text" id="presetCode" readonly>
+      <button type="button" id="copyPreset" class="share-btn">Copy</button>
+    </div>
+    <div class="share-row">
+      <button type="button" id="copyLink" class="share-btn alt" style="flex:1;">🔗 Copy share link</button>
+    </div>
+
+    <div class="modal-lab">Load a code or link</div>
+    <div class="share-row">
+      <input type="text" id="pastePreset" placeholder="Paste a setup code or link…">
+      <button type="button" id="loadPreset" class="share-btn">Load</button>
+    </div>
+    <div class="share-status" id="shareStatus"></div>
+  </div>
 </div>
 
 <script>
@@ -363,6 +442,9 @@ const ICONS = {
   shirt:'<path d="M20.38 3.46 16 2a4 4 0 0 1-8 0L3.62 3.46a2 2 0 0 0-1.34 2.23l.58 3.47a1 1 0 0 0 .99.84H6v10c0 1.1.9 2 2 2h8a2 2 0 0 0 2-2V10h2.15a1 1 0 0 0 .99-.84l.58-3.47a2 2 0 0 0-1.34-2.23z"/>',
   sword:'<polyline points="14.5 17.5 3 6 3 3 6 3 17.5 14.5"/><line x1="13" x2="19" y1="19" y2="13"/><line x1="16" x2="20" y1="16" y2="20"/><line x1="19" x2="21" y1="21" y2="19"/>',
   feather:'<path d="M20.24 12.24a6 6 0 0 0-8.49-8.49L5 10.5V19h8.5z"/><line x1="16" x2="2" y1="8" y2="22"/><line x1="17.5" x2="9" y1="15" y2="15"/>',
+  paw:'<circle cx="11" cy="4" r="2"/><circle cx="18" cy="8" r="2"/><circle cx="20" cy="16" r="2"/><path d="M9 10a5 5 0 0 1 5 5v3.5a3.5 3.5 0 0 1-6.84 1.045Q6.52 17.48 4.46 16.84A3.5 3.5 0 0 1 5.5 10Z"/>',
+  share:'<circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" x2="15.42" y1="13.51" y2="17.49"/><line x1="15.41" x2="8.59" y1="6.51" y2="10.49"/>',
+  io:'<path d="M17 3 21 7l-4 4"/><path d="M21 7H9"/><path d="M7 21l-4-4 4-4"/><path d="M3 17h12"/>',
 };
 function icon(name){
   return '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">'+(ICONS[name]||'')+'</svg>';
@@ -385,6 +467,7 @@ const MUTATIONS = [
   {name:"Blossom",val:120,ic:"flower",color:"#c483e6"},
   {name:"Admin",val:150,ic:"burst",color:"#2f3b48"},
   {name:"Heart",val:300,ic:"heart",color:"#ff3a5c"},
+  {name:"Meteor",val:175,ic:"galaxy",color:"#8b3df0"},
 ];
 function mutIcon(type,c){
   const OL='#1c1430', hi='rgba(255,255,255,.34)';
@@ -426,6 +509,17 @@ function mutIcon(type,c){
     case 'heart': return S(
       '<path d="M12 21S3 14.6 3 8.4C3 5.1 5.4 3.1 8 3.1c2 0 3.4 1.2 4 2.3.6-1.1 2-2.3 4-2.3 2.6 0 5 2 5 5.3C21 14.6 12 21 12 21z" fill="'+c+'" stroke="'+OL+'" stroke-width="1.7" stroke-linejoin="round"/>'+
       '<ellipse cx="8.4" cy="8" rx="1.9" ry="1.2" fill="rgba(255,255,255,.5)" transform="rotate(-32 8.4 8)"/>');
+    case 'galaxy': return S(
+      '<g transform="rotate(-24 12 12)">'+
+      '<ellipse cx="12" cy="12" rx="10" ry="5.1" fill="'+c+'" stroke="'+OL+'" stroke-width="1.7"/>'+
+      '<path d="M3.4 13.4A10 5.1 0 0 0 20.6 13.4 9 4.3 0 0 1 3.4 13.4Z" fill="rgba(0,0,0,.18)"/>'+
+      '<ellipse cx="12" cy="12" rx="6" ry="2.5" fill="rgba(20,6,46,.35)"/>'+
+      '<circle cx="12" cy="12" r="4" fill="rgba(255,255,255,.35)"/>'+
+      '<circle cx="12" cy="12" r="2.7" fill="#fff" stroke="'+OL+'" stroke-width=".8"/>'+
+      '</g>'+
+      '<path d="M18 4.4 18.55 6.25 20.4 6.8 18.55 7.35 18 9.2 17.45 7.35 15.6 6.8 17.45 6.25Z" fill="#fff" stroke="'+OL+'" stroke-width=".5" stroke-linejoin="round"/>'+
+      '<path d="M6.6 15.2 6.95 16.35 8.1 16.7 6.95 17.05 6.6 18.2 6.25 17.05 5.1 16.7 6.25 16.35Z" fill="#fff"/>'+
+      '<circle cx="4.7" cy="9.2" r=".8" fill="#fff"/>');
   }
   return '';
 }
@@ -437,9 +531,22 @@ const GRADES = [
   {name:"SR",v:15,c:"#7a5cff"},{name:"UR",v:20,c:"#ffce2e"},
 ];
 const COSMETIC_SLOTS = [
-  {key:"head",  name:"Head",   icon:"crown",   opts:[0,5,10,20,200]},
-  {key:"body",  name:"Body",   icon:"shirt",   opts:[0,5,10,20,200]},
+  {key:"head",  name:"Head",   icon:"crown",   opts:[0,5,10,20,200,400]},
+  {key:"body",  name:"Body",   icon:"shirt",   opts:[0,5,10,20,200,500]},
   {key:"tail",  name:"Tail",   icon:"feather", opts:[0,5,10,20,200]},
+];
+const PET_RARITY = {gray:"#9aa0aa", green:"#5fd66b", blue:"#4db8ff", purple:"#b07fff", gold:"#ffce2e"};
+const PETS = [
+  {name:"Porky",      max:2.3,  rarity:"gray"},
+  {name:"Wooly",      max:3.4,  rarity:"gray"},
+  {name:"Chick",      max:4.5,  rarity:"green"},
+  {name:"Daisy",      max:5.5,  rarity:"green"},
+  {name:"Duckie",     max:6.3,  rarity:"blue"},
+  {name:"Unicorn",    max:31.2, rarity:"blue"},
+  {name:"Spirit Fox", max:11.8, rarity:"purple"},
+  {name:"Crystal Doe",max:8,    rarity:"purple"},
+  {name:"Pegasus",    max:null, rarity:"gold"},
+  {name:"Lil' Dragon",max:null, rarity:"gold"},
 ];
 const PRESETS = [
   {label:"Brown Uncommon Squishy",num:10,exp:0},
@@ -494,22 +601,23 @@ function paintMuts(container,sel,bestIdx){
 }
 function buildGrades(container,initial,onChange){
   const state={value:initial};
+  function paint(){ container.querySelectorAll('.grade').forEach(x=>x.classList.toggle('on',+x.dataset.v===state.value)); }
   GRADES.forEach(g=>{
     const d=document.createElement('div'); d.className='grade'+(g.v===initial?' on':'');
     d.dataset.v=g.v; d.style.setProperty('--gc',g.c);
     d.innerHTML=`<span class="g-name">${g.name}</span><span class="g-mult">${g.v}×</span>`;
-    d.addEventListener('click',()=>{ state.value=g.v; container.querySelectorAll('.grade').forEach(x=>x.classList.toggle('on',+x.dataset.v===g.v)); onChange(); });
+    d.addEventListener('click',()=>{ state.value=g.v; paint(); onChange(); });
     container.appendChild(d);
   });
-  return state;
+  return { get value(){return state.value;}, set value(v){ state.value=+v; paint(); } };
 }
 function buildCosmetics(container,totalEl,onChange){
-  const state={};
+  const state={}; const segsByKey={};
   COSMETIC_SLOTS.forEach(slot=>{
     state[slot.key]=0;
     const cell=document.createElement('div'); cell.className='cos-slot';
     const lab=document.createElement('div'); lab.className='cos-lab'; lab.innerHTML=`<span class="cos-ic">${icon(slot.icon)}</span>${slot.name}`;
-    const segs=document.createElement('div'); segs.className='cos-segs';
+    const segs=document.createElement('div'); segs.className='cos-segs'; segsByKey[slot.key]=segs;
     slot.opts.forEach(v=>{
       const b=document.createElement('button'); b.type='button'; b.className='seg'+(v===0?' on':''); b.dataset.v=v;
       b.textContent=v===0?'None':v+'%';
@@ -518,7 +626,34 @@ function buildCosmetics(container,totalEl,onChange){
     });
     cell.appendChild(lab); cell.appendChild(segs); container.appendChild(cell);
   });
-  return { total:()=>Object.values(state).reduce((a,b)=>a+b,0) };
+  return {
+    total:()=>Object.values(state).reduce((a,b)=>a+b,0),
+    get:()=>({...state}),
+    set:obj=>{ COSMETIC_SLOTS.forEach(slot=>{ if(obj&&obj[slot.key]!=null){ const v=+obj[slot.key]; state[slot.key]=v; segsByKey[slot.key].querySelectorAll('.seg').forEach(s=>s.classList.toggle('on',+s.dataset.v===v)); } }); }
+  };
+}
+function buildPets(container,onChange,defaults){
+  const state={}; const inputs={};
+  PETS.forEach((p,i)=>{
+    const dv=(defaults&&defaults[i])?defaults[i]:0;
+    state[i]=dv;
+    const cell=document.createElement('div'); cell.className='pet'+(dv>0?' on':'');
+    cell.style.setProperty('--pc',PET_RARITY[p.rarity]);
+    cell.innerHTML=
+      `<div class="pet-top"><span class="pet-dot"></span><span class="pet-nm">${p.name}</span></div>`+
+      `<div class="pet-in"><input type="number" min="0" step="any" value="${dv||''}" placeholder="0"><span class="pet-pct">%</span></div>`;
+    const inp=cell.querySelector('input'); inputs[i]=inp;
+    inp.addEventListener('input',()=>{
+      let v=parseFloat(inp.value)||0; if(v<0){v=0;inp.value=0;}
+      state[i]=v; cell.classList.toggle('on',v>0); onChange();
+    });
+    container.appendChild(cell);
+  });
+  return {
+    total:()=>Object.values(state).reduce((a,b)=>a+b,0),
+    get:()=>PETS.map((_,i)=>state[i]),
+    load:arr=>{ if(!arr) return; PETS.forEach((p,i)=>{ let v=+arr[i]||0; if(v<0)v=0; state[i]=v; inputs[i].value=v||''; inputs[i].closest('.pet').classList.toggle('on',v>0); }); }
+  };
 }
 function makeDropdown(target,opts,initial,onChange){
   const wrap=document.createElement('div'); wrap.className='dd';
@@ -555,6 +690,7 @@ const mainSel=new Set();
 buildMuts(document.getElementById('muts'),mainSel,updateMain);
 const mainGrade=buildGrades(document.getElementById('grades'),1,updateMain);
 const mainCos=buildCosmetics(document.getElementById('cosGrid'),null,updateMain);
+const mainPets=buildPets(document.getElementById('petGrid'),updateMain);
 const presetDD=makeDropdown(document.getElementById('presetDD'),PRESETS.map((p,i)=>({value:i,label:p.label})),2,updateMain);
 const baseMagDD=makeDropdown(document.getElementById('baseMagDD'),magOpts,36,updateMain);
 
@@ -572,8 +708,10 @@ function updateMain(){
   const cash=document.getElementById('cash').checked?2:1;
   const vip=document.getElementById('vip').checked?1.2:1;
   const {mult,bestIdx}=mutInfo(mainSel);
-  lastMainIncome=Math.floor((level+1)*base*mult*grade*(1+cos/100)*cash*vip);
+  const pet=mainPets.total();
+  lastMainIncome=Math.floor((level+1)*base*mult*grade*(1+cos/100)*cash*vip*(1+pet/100));
   document.getElementById('cosTotal').textContent='+'+cos+'%';
+  document.getElementById('petTotal').textContent='+'+(Math.round(pet*100)/100)+'%';
   paintMuts(document.getElementById('muts'),mainSel,bestIdx);
   const out=document.getElementById('out');
   out.innerHTML=fmt(lastMainIncome)+'<span class="per">/s</span>';
@@ -624,6 +762,7 @@ const baseSel=new Set();
 buildMuts(document.getElementById('bMuts'),baseSel,updateBase);
 const baseGrade=buildGrades(document.getElementById('bGrades'),1,updateBase);
 const baseCos=buildCosmetics(document.getElementById('bCosGrid'),null,updateBase);
+const basePets=buildPets(document.getElementById('bPetGrid'),updateBase);
 const bIncomeMagDD=makeDropdown(document.getElementById('bIncomeMagDD'),magOpts,0,updateBase);
 function updateBase(){
   const income=(parseFloat(document.getElementById('bIncome').value)||0)*Math.pow(10,+bIncomeMagDD.value);
@@ -633,9 +772,11 @@ function updateBase(){
   const cash=document.getElementById('bCash').checked?2:1;
   const vip=document.getElementById('bVip').checked?1.2:1;
   const {mult,bestIdx}=mutInfo(baseSel);
-  const denom=(level+1)*mult*grade*(1+cos/100)*cash*vip;
+  const pet=basePets.total();
+  const denom=(level+1)*mult*grade*(1+cos/100)*cash*vip*(1+pet/100);
   const base=denom>0?income/denom:0;
   document.getElementById('bCosTotal').textContent='+'+cos+'%';
+  document.getElementById('bPetTotal').textContent='+'+(Math.round(pet*100)/100)+'%';
   paintMuts(document.getElementById('bMuts'),baseSel,bestIdx);
   const out=document.getElementById('bOut');
   out.innerHTML=fmtBase(base)+'<span class="per">/lvl</span>';
@@ -644,6 +785,95 @@ function updateBase(){
     baseSel.size===0?'No mutations - multiplier <b>1×</b>':`Mutation multiplier <b>${Math.round(mult*100)/100}×</b>`;
 }
 ['bIncome','bLevel','bCash','bVip'].forEach(id=>document.getElementById(id).addEventListener('input',updateBase));
+
+// ---------- SHARE / PRESET ----------
+const $id=id=>document.getElementById(id);
+function getPreset(){
+  return {
+    v:1,
+    lvl:parseFloat($id('level').value)||0,
+    cb:$id('customBase').checked?1:0,
+    ps:+presetDD.value,
+    b:parseFloat($id('base').value)||0,
+    bm:+baseMagDD.value,
+    g:mainGrade.value,
+    cash:$id('cash').checked?1:0,
+    vip:$id('vip').checked?1:0,
+    cos:mainCos.get(),
+    pets:mainPets.get(),
+    muts:[...mainSel],
+    f:{
+      lvl:parseFloat($id('fLevel').value)||0,
+      cust:$id('fCustom').checked?1:0,
+      best:parseFloat($id('fBest').value)||0,
+      bm:+fBestMagDD.value,
+      muts:[...fateSel]
+    }
+  };
+}
+function b64e(s){ return btoa(unescape(encodeURIComponent(s))).replace(/\+/g,'-').replace(/\//g,'_').replace(/=+$/,''); }
+function b64d(s){ s=String(s).replace(/-/g,'+').replace(/_/g,'/'); while(s.length%4) s+='='; return decodeURIComponent(escape(atob(s))); }
+function encodePreset(o){ return 'DUMP1-'+b64e(JSON.stringify(o)); }
+function decodePreset(str){
+  const m=String(str||'').match(/DUMP1-([A-Za-z0-9_-]+)/);
+  if(!m) throw new Error('bad code');
+  return JSON.parse(b64d(m[1]));
+}
+function shareLink(code){ return location.href.split('#')[0].split('?')[0]+'#s='+code; }
+function applyPreset(o){
+  if(!o||typeof o!=='object') throw new Error('bad');
+  $id('level').value=o.lvl!=null?o.lvl:1;
+  $id('customBase').checked=!!o.cb;
+  $id('customBase').dispatchEvent(new Event('change'));
+  if(o.ps!=null) presetDD.value=o.ps;
+  $id('base').value=o.b!=null?o.b:0;
+  if(o.bm!=null) baseMagDD.value=o.bm;
+  if(o.g!=null) mainGrade.value=o.g;
+  $id('cash').checked=!!o.cash;
+  $id('vip').checked=!!o.vip;
+  mainCos.set(o.cos||{});
+  mainPets.load(o.pets||[]);
+  mainSel.clear(); (o.muts||[]).forEach(i=>mainSel.add(+i));
+  const f=o.f||{};
+  $id('fLevel').value=f.lvl!=null?f.lvl:1;
+  $id('fCustom').checked=!!f.cust;
+  $id('fCustom').dispatchEvent(new Event('change'));
+  $id('fBest').value=f.best!=null?f.best:0;
+  if(f.bm!=null) fBestMagDD.value=f.bm;
+  fateSel.clear(); (f.muts||[]).forEach(i=>{ if(+i!==ADMIN_IDX) fateSel.add(+i); });
+  updateMain(); updateFate();
+}
+function flashStatus(msg,err){
+  const el=$id('shareStatus'); el.textContent=msg; el.classList.toggle('err',!!err);
+  clearTimeout(flashStatus._t); flashStatus._t=setTimeout(()=>{el.textContent='';el.classList.remove('err');},2800);
+}
+function copyText(text,okMsg){
+  const fallback=()=>{ const ta=document.createElement('textarea'); ta.value=text; ta.style.position='fixed'; ta.style.opacity='0'; document.body.appendChild(ta); ta.focus(); ta.select(); let ok=false; try{ ok=document.execCommand('copy'); }catch(e){} document.body.removeChild(ta); flashStatus(ok?okMsg:'Ready — select the code and copy it'); };
+  if(navigator.clipboard&&navigator.clipboard.writeText){ navigator.clipboard.writeText(text).then(()=>flashStatus(okMsg)).catch(fallback); }
+  else fallback();
+}
+$id('copyPreset').addEventListener('click',()=>{ const code=encodePreset(getPreset()); $id('presetCode').value=code; copyText(code,'Copied setup code!'); });
+$id('copyLink').addEventListener('click',()=>{ const code=encodePreset(getPreset()); $id('presetCode').value=code; copyText(shareLink(code),'Copied share link!'); });
+$id('loadPreset').addEventListener('click',()=>{
+  const src=$id('pastePreset').value.trim()||$id('presetCode').value.trim();
+  if(!src){ flashStatus('Paste a code or link first.',true); return; }
+  try{ applyPreset(decodePreset(src)); $id('presetCode').value=encodePreset(getPreset()); flashStatus('Setup loaded!'); }
+  catch(e){ flashStatus('That code didn’t look right.',true); }
+});
+
+// ---------- IMPORT/EXPORT MODAL ----------
+function openIO(){ $id('presetCode').value=encodePreset(getPreset()); $id('pastePreset').value=''; $id('shareStatus').textContent=''; $id('ioModal').classList.add('open'); }
+function closeIO(){ $id('ioModal').classList.remove('open'); }
+$id('ioToggle').addEventListener('click',openIO);
+$id('ioClose').addEventListener('click',closeIO);
+$id('ioModal').addEventListener('click',e=>{ if(e.target===$id('ioModal')) closeIO(); });
+document.addEventListener('keydown',e=>{ if(e.key==='Escape') closeIO(); });
+
+// auto-load a build shared via URL (e.g. ...#s=DUMP1-xxxx)
+(function(){
+  const m=location.href.match(/DUMP1-[A-Za-z0-9_-]+/);
+  if(m){ try{ applyPreset(decodePreset(m[0])); }catch(e){} }
+})();
 
 // ---------- TABS ----------
 document.querySelectorAll('.tab').forEach(btn=>{
