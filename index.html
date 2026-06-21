@@ -167,15 +167,58 @@
   .io-btn svg{width:21px;height:21px;color:var(--ink);}
   .modal-overlay{position:fixed;inset:0;z-index:100;background:rgba(15,8,24,.58);backdrop-filter:blur(3px);display:none;align-items:center;justify-content:center;padding:18px;}
   .modal-overlay.open{display:flex;}
-  .modal{background:var(--card);border:1px solid var(--line);border-radius:24px;box-shadow:var(--shadow);width:100%;max-width:520px;max-height:88vh;overflow:auto;padding:24px 24px 22px;}
+  .modal{background:var(--card);border:1px solid var(--line);border-radius:24px;box-shadow:var(--shadow);width:100%;max-width:520px;max-height:90vh;overflow:auto;padding:20px 22px 18px;}
   .modal-head{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:4px;}
   .modal-head h3{font-family:'Fredoka',sans-serif;font-weight:600;font-size:19px;margin:0;color:var(--ink);display:flex;align-items:center;gap:11px;}
   .modal-ic{display:inline-flex;align-items:center;justify-content:center;width:34px;height:34px;border-radius:11px;background:var(--grape-soft);color:var(--grape);flex:none;}
   .modal-ic svg{width:19px;height:19px;}
   .modal-close{width:34px;height:34px;border-radius:10px;border:2px solid var(--line);background:var(--card2);color:var(--muted);font-size:22px;line-height:1;cursor:pointer;flex:none;transition:border-color .15s,color .15s;display:flex;align-items:center;justify-content:center;}
   .modal-close:hover{border-color:var(--grape);color:var(--ink);}
-  .modal-sub{color:var(--muted);font-weight:600;font-size:13.5px;margin:0 0 14px;line-height:1.5;}
+  .modal-sub{color:var(--muted);font-weight:600;font-size:13px;margin:0 0 11px;line-height:1.45;}
   .modal-lab{font-family:'Fredoka',sans-serif;font-weight:600;font-size:12px;letter-spacing:.6px;text-transform:uppercase;color:var(--grape);margin:16px 0 8px;}
+
+  /* formula breakdown */
+  .formula-lead{color:var(--muted);font-weight:600;font-size:13.5px;line-height:1.5;margin:0 0 16px;}
+  .fx-chain{display:grid;grid-template-columns:repeat(4,1fr);gap:9px;align-items:stretch;margin-bottom:13px;}
+  .fx{position:relative;display:flex;flex-direction:column;align-items:center;gap:0;background:var(--chip-bg);border:1.5px solid var(--line);border-top:3px solid var(--ac);border-radius:13px;padding:7px 8px;min-width:0;text-align:center;}
+  .fx.off{opacity:.4;--ac:#9aa0aa;}
+  .fx.off{border-top-color:#9aa0aa;}
+  .fx::before{content:"×";position:absolute;top:50%;left:-6px;transform:translate(-50%,-50%);font-family:'Fredoka',sans-serif;font-weight:500;font-size:15px;color:var(--muted);opacity:.5;}
+  .fx:nth-child(4n+1)::before{display:none;}
+  @media(max-width:560px){
+    .fx-chain{grid-template-columns:repeat(2,1fr);}
+    .fx:nth-child(4n+1)::before{display:block;}
+    .fx:nth-child(2n+1)::before{display:none;}
+  }
+  @media(min-width:561px){ #fxFateSection .fx-chain{grid-template-columns:repeat(3,1fr);} }
+  .fx-ic{display:inline-flex;align-items:center;justify-content:center;width:22px;height:22px;border-radius:7px;background:color-mix(in srgb,var(--ac) 16%,transparent);color:var(--ac);margin-bottom:3px;}
+  .fx-ic svg{width:13px;height:13px;}
+  .fx-name{font-weight:800;font-size:9px;letter-spacing:.4px;text-transform:uppercase;color:var(--muted);white-space:nowrap;}
+  .fx-val{font-family:'Fredoka',sans-serif;font-weight:600;font-size:14px;color:var(--ink);line-height:1.15;white-space:nowrap;}
+  .fx-sub{font-weight:800;font-size:9.5px;color:var(--ac);white-space:nowrap;margin-top:1px;}
+  .fx-op{display:flex;align-items:center;justify-content:center;font-family:'Fredoka',sans-serif;font-weight:500;font-size:15px;color:var(--muted);opacity:.55;flex:0 0 auto;padding:0 1px;}
+  .fx-result-row{display:flex;align-items:center;gap:12px;margin:0 0 13px;flex-wrap:wrap;}
+  .fx-eq-op{font-family:'Fredoka',sans-serif;font-weight:600;font-size:22px;color:var(--money);line-height:1;}
+  .fx-total{display:inline-flex;align-items:baseline;gap:8px;background:color-mix(in srgb,var(--money) 13%,var(--card));border:1.5px solid var(--money);border-radius:13px;padding:7px 15px;box-shadow:0 4px 14px color-mix(in srgb,var(--money) 22%,transparent);}
+  .fx-total-val{font-family:'Fredoka',sans-serif;font-weight:600;font-size:21px;color:var(--money);line-height:1;}
+  .fx-total-unit{font-weight:800;font-size:11px;color:var(--money-dark);text-transform:uppercase;letter-spacing:.5px;}
+  .fx-legend{display:grid;grid-template-columns:repeat(auto-fit,minmax(255px,1fr));gap:6px 18px;margin:0 0 13px;}
+  .lg{display:flex;gap:9px;align-items:flex-start;font-size:12px;color:var(--muted);font-weight:600;line-height:1.38;}
+  .lg-dot{width:9px;height:9px;border-radius:50%;background:var(--ac);flex:none;margin-top:3px;box-shadow:0 0 0 3px color-mix(in srgb,var(--ac) 22%,transparent);}
+  .lg b{color:var(--ink);font-weight:800;margin-right:4px;}
+  .fx-sub-formula{background:linear-gradient(180deg,color-mix(in srgb,var(--grape) 8%,var(--chip-bg)),var(--chip-bg));border:1.5px solid color-mix(in srgb,var(--grape) 25%,var(--line));border-radius:14px;padding:11px 15px;}
+  .fx-sub-formula .ttl{display:flex;align-items:center;gap:8px;font-family:'Fredoka',sans-serif;font-weight:600;font-size:12px;text-transform:uppercase;letter-spacing:.6px;color:var(--grape);margin-bottom:8px;}
+  .fx-sub-formula .ttl .fx-ic{width:22px;height:22px;margin:0;background:var(--grape-soft);color:var(--grape);}
+  .fx-sub-formula .ttl .fx-ic svg{width:13px;height:13px;}
+  .fx-sub-formula .eqn{font-family:'Fredoka',sans-serif;font-weight:500;font-size:15px;color:var(--ink);line-height:1.55;}
+  .hl-best{color:var(--money);font-weight:600;}
+  .hl-rest{color:var(--grape);font-weight:600;}
+  .eqn-live{font-family:'Fredoka',sans-serif;font-weight:600;font-size:15.5px;color:var(--ink);margin-top:8px;padding-top:8px;border-top:1px dashed color-mix(in srgb,var(--grape) 30%,var(--line));}
+  .eqn-live b{color:var(--money);}
+  .fx-open{position:absolute;top:14px;right:14px;z-index:3;width:34px;height:34px;border-radius:50%;border:1.5px solid var(--line);background:color-mix(in srgb,var(--card) 55%,transparent);color:var(--muted);cursor:pointer;display:flex;align-items:center;justify-content:center;transition:border-color .15s,color .15s,transform .15s;}
+  .fx-open:hover{border-color:var(--grape);color:var(--grape);transform:scale(1.08);}
+  .fx-open svg{width:17px;height:17px;}
+  .modal-wide{max-width:680px;}
 
   /* toggles */
   .toggles{display:flex;flex-direction:column;gap:12px;}
@@ -229,6 +272,7 @@
 
   <section id="tab-income" class="panel">
   <div class="readout">
+    <button class="fx-open" id="fxOpenMain" title="How it's calculated" data-icon="sigma"></button>
     <div class="label">Income per second</div>
     <div class="money" id="out">$0<span class="per">/s</span></div>
     <div class="mult-line" id="multline">Pick a setup to begin</div>
@@ -302,6 +346,7 @@
     <div class="divider"><span><span class="dic" data-icon="wand"></span>Woven Fate</span></div>
     <p class="fate-intro">A Woven Fate dumpling inherits your <b>best dumpling's whole income</b>, passes, grade and cosmetics already baked in. By default it uses the dumpling above. Admin can't roll on Woven Fate.</p>
     <div class="readout">
+      <button class="fx-open" id="fxOpenFate" title="How it's calculated" data-icon="sigma"></button>
       <div class="label">Woven Fate income per second</div>
       <div class="money" id="fOut">$0<span class="per">/s</span></div>
       <div class="mult-line" id="fMultline">Pick a setup to begin</div>
@@ -427,6 +472,71 @@
   </div>
 </div>
 
+<div class="modal-overlay" id="fxModal">
+  <div class="modal modal-wide">
+    <div class="modal-head">
+      <h3><span class="modal-ic" data-icon="sigma"></span><span id="fxModalTitle">How it's calculated</span></h3>
+      <button class="modal-close" id="fxClose" aria-label="Close">×</button>
+    </div>
+
+    <div id="fxMainSection">
+      <p class="modal-sub">Your income per second is simply every piece multiplied together. Here's each one with your live numbers:</p>
+      <div class="fx-chain">
+        <div class="fx" style="--ac:#5b9cff;"><span class="fx-ic" data-icon="gear"></span><div class="fx-name">Level +1</div><div class="fx-val" id="fxLevel">2</div></div>
+        <div class="fx" style="--ac:#f4b740;"><span class="fx-ic" data-icon="coins"></span><div class="fx-name">Base</div><div class="fx-val" id="fxBase">10</div></div>
+        <div class="fx" style="--ac:#b07fff;"><span class="fx-ic" data-icon="gem"></span><div class="fx-name">Mutations</div><div class="fx-val" id="fxMut">1×</div></div>
+        <div class="fx" style="--ac:#ffce2e;"><span class="fx-ic" data-icon="award"></span><div class="fx-name">Grade</div><div class="fx-val" id="fxGrade">1×</div><div class="fx-sub" id="fxGradeSub">F</div></div>
+        <div class="fx" style="--ac:#ff7eb6;"><span class="fx-ic" data-icon="sparkles"></span><div class="fx-name">Cosmetics</div><div class="fx-val" id="fxCos">1×</div><div class="fx-sub" id="fxCosSub">+0%</div></div>
+        <div class="fx" id="fxCashTile" style="--ac:#2fd47a;"><span class="fx-ic" data-icon="dollar"></span><div class="fx-name">Cash pass</div><div class="fx-val" id="fxCash">1×</div></div>
+        <div class="fx" id="fxVipTile" style="--ac:#ff9d3d;"><span class="fx-ic" data-icon="crown"></span><div class="fx-name">VIP pass</div><div class="fx-val" id="fxVip">1×</div></div>
+        <div class="fx" style="--ac:#36c5e0;"><span class="fx-ic" data-icon="paw"></span><div class="fx-name">Pets</div><div class="fx-val" id="fxPets">1×</div><div class="fx-sub" id="fxPetSub">+0%</div></div>
+      </div>
+      <div class="fx-result-row">
+        <span class="fx-eq-op">=</span>
+        <div class="fx-total"><span class="fx-total-val" id="fxResult">$0</span><span class="fx-total-unit">per second</span></div>
+      </div>
+      <div class="fx-legend">
+        <div class="lg" style="--ac:#5b9cff;"><span class="lg-dot"></span><div><b>Level + 1</b> every level pays out one more helping of the base.</div></div>
+        <div class="lg" style="--ac:#f4b740;"><span class="lg-dot"></span><div><b>Base</b> the dumpling's raw income per level.</div></div>
+        <div class="lg" style="--ac:#b07fff;"><span class="lg-dot"></span><div><b>Mutations</b> the combined mutation multiplier — see below.</div></div>
+        <div class="lg" style="--ac:#ffce2e;"><span class="lg-dot"></span><div><b>Grade</b> your grade tier, from F (1×) up to UR (20×).</div></div>
+        <div class="lg" style="--ac:#ff7eb6;"><span class="lg-dot"></span><div><b>Cosmetics</b> 1 + (sum of cosmetic %) ÷ 100.</div></div>
+        <div class="lg" style="--ac:#2fd47a;"><span class="lg-dot"></span><div><b>Cash pass</b> ×2 while active, otherwise ×1.</div></div>
+        <div class="lg" style="--ac:#ff9d3d;"><span class="lg-dot"></span><div><b>VIP pass</b> ×1.2 while active, otherwise ×1.</div></div>
+        <div class="lg" style="--ac:#36c5e0;"><span class="lg-dot"></span><div><b>Pets</b> 1 + (sum of pet %) ÷ 100.</div></div>
+      </div>
+      <div class="fx-sub-formula">
+        <div class="ttl"><span class="fx-ic" data-icon="gem"></span>Mutation multiplier</div>
+        <div class="eqn"><span class="hl-best">strongest mutation</span> + ¼ × ( <span class="hl-rest">sum of all the others</span> − (count − 1) )</div>
+        <div class="eqn-live" id="fxMutBreak">Pick some mutations to see this filled in.</div>
+      </div>
+    </div>
+
+    <div id="fxFateSection" class="hidden">
+      <p class="modal-sub">A Woven Fate dumpling <b>inherits your best dumpling's whole income</b> (grade, passes, cosmetics and pets already baked in), then multiplies by its own level and its own mutations:</p>
+      <div class="fx-chain">
+        <div class="fx" style="--ac:#5b9cff;"><span class="fx-ic" data-icon="gear"></span><div class="fx-name">Level +1</div><div class="fx-val" id="wfxLevel">2</div></div>
+        <div class="fx" style="--ac:#2fd47a;"><span class="fx-ic" data-icon="dollar"></span><div class="fx-name">Best income</div><div class="fx-val" id="wfxBest">$0</div></div>
+        <div class="fx" style="--ac:#b07fff;"><span class="fx-ic" data-icon="gem"></span><div class="fx-name">Mutations</div><div class="fx-val" id="wfxMut">1×</div></div>
+      </div>
+      <div class="fx-result-row">
+        <span class="fx-eq-op">=</span>
+        <div class="fx-total"><span class="fx-total-val" id="wfxResult">$0</span><span class="fx-total-unit">per second</span></div>
+      </div>
+      <div class="fx-legend">
+        <div class="lg" style="--ac:#5b9cff;"><span class="lg-dot"></span><div><b>Level + 1</b> the Woven Fate dumpling's own level.</div></div>
+        <div class="lg" style="--ac:#2fd47a;"><span class="lg-dot"></span><div><b>Best income</b> your best dumpling's full income/s — every multiplier above is already inside this number.</div></div>
+        <div class="lg" style="--ac:#b07fff;"><span class="lg-dot"></span><div><b>Mutations</b> the Woven Fate dumpling's own mutation multiplier (Admin can't roll here).</div></div>
+      </div>
+      <div class="fx-sub-formula">
+        <div class="ttl"><span class="fx-ic" data-icon="gem"></span>Mutation multiplier</div>
+        <div class="eqn"><span class="hl-best">strongest mutation</span> + ¼ × ( <span class="hl-rest">sum of all the others</span> − (count − 1) )</div>
+        <div class="eqn-live" id="wfxMutBreak">Pick some mutations to see this filled in.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
 <script>
 const ICONS = {
   gear:'<circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/>',
@@ -445,6 +555,8 @@ const ICONS = {
   paw:'<circle cx="11" cy="4" r="2"/><circle cx="18" cy="8" r="2"/><circle cx="20" cy="16" r="2"/><path d="M9 10a5 5 0 0 1 5 5v3.5a3.5 3.5 0 0 1-6.84 1.045Q6.52 17.48 4.46 16.84A3.5 3.5 0 0 1 5.5 10Z"/>',
   share:'<circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" x2="15.42" y1="13.51" y2="17.49"/><line x1="15.41" x2="8.59" y1="6.51" y2="10.49"/>',
   io:'<path d="M17 3 21 7l-4 4"/><path d="M21 7H9"/><path d="M7 21l-4-4 4-4"/><path d="M3 17h12"/>',
+  sigma:'<path d="M18 7V5a1 1 0 0 0-1-1H6.5a.5.5 0 0 0-.4.8l4.5 6a.5.5 0 0 1 0 .8l-4.5 6a.5.5 0 0 0 .4.8H17a1 1 0 0 0 1-1v-2"/>',
+  dollar:'<line x1="12" x2="12" y1="2" y2="22"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/>',
 };
 function icon(name){
   return '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">'+(ICONS[name]||'')+'</svg>';
@@ -541,7 +653,7 @@ const GRADES = [
   {name:"SR",v:15,c:"#7a5cff"},{name:"UR",v:20,c:"#ffce2e"},
 ];
 const COSMETIC_SLOTS = [
-  {key:"head",  name:"Head",   icon:"crown",   opts:[0,5,10,20,200,400]},
+  {key:"head",  name:"Head",   icon:"crown",   opts:[0,5,10,20,200,400,500]},
   {key:"body",  name:"Body",   icon:"shirt",   opts:[0,5,10,20,200,500]},
   {key:"tail",  name:"Tail",   icon:"feather", opts:[0,5,10,20,200]},
 ];
@@ -728,6 +840,31 @@ function updateMain(){
   out.classList.add('pulse');setTimeout(()=>out.classList.remove('pulse'),120);
   document.getElementById('multline').innerHTML=
     mainSel.size===0?'No mutations - multiplier <b>1×</b>':`Mutation multiplier <b>${Math.round(mult*100)/100}×</b>`;
+  // formula breakdown
+  const cf=v=>Math.round(v*100)/100;
+  const gName=(GRADES.find(g=>g.v===grade)||{}).name||'';
+  const compact=n=>{ const s=fmt(n); return s[0]==='$'?s.slice(1):s; };
+  document.getElementById('fxLevel').textContent=(level+1).toLocaleString();
+  document.getElementById('fxBase').textContent=compact(base);
+  document.getElementById('fxMut').textContent=cf(mult)+'×';
+  document.getElementById('fxGrade').textContent=grade+'×';
+  document.getElementById('fxGradeSub').textContent=gName;
+  document.getElementById('fxCos').textContent=cf(1+cos/100)+'×';
+  document.getElementById('fxCosSub').textContent='+'+cos+'%';
+  document.getElementById('fxCash').textContent=cash+'×';
+  document.getElementById('fxVip').textContent=vip+'×';
+  document.getElementById('fxCashTile').classList.toggle('off',cash===1);
+  document.getElementById('fxVipTile').classList.toggle('off',vip===1);
+  document.getElementById('fxPets').textContent=cf(1+pet/100)+'×';
+  document.getElementById('fxPetSub').textContent='+'+cf(pet)+'%';
+  document.getElementById('fxResult').textContent=fmt(lastMainIncome);
+  const mb=document.getElementById('fxMutBreak');
+  if(mainSel.size===0){ mb.innerHTML='Pick some mutations to see this filled in.'; }
+  else{
+    const vals=[...mainSel].map(i=>MUTATIONS[i].val).sort((a,b)=>b-a);
+    const bestVal=vals[0], rest=vals.slice(1).reduce((a,b)=>a+b,0), n=vals.length;
+    mb.innerHTML=`<span class="hl-best">${bestVal}</span> + ¼ × ( <span class="hl-rest">${rest}</span> − ${n-1} ) = <b>${cf(mult)}×</b>`;
+  }
   updateFate();
 }
 document.getElementById('customBase').addEventListener('change',e=>{
@@ -759,6 +896,19 @@ function updateFate(){
   out.classList.add('pulse');setTimeout(()=>out.classList.remove('pulse'),120);
   document.getElementById('fMultline').innerHTML=
     fateSel.size===0?'No mutations - multiplier <b>1×</b>':`Mutation multiplier <b>${Math.round(mult*100)/100}×</b>`;
+  // woven formula breakdown
+  const wcf=v=>Math.round(v*100)/100;
+  document.getElementById('wfxLevel').textContent=(level+1).toLocaleString();
+  document.getElementById('wfxBest').textContent=fmt(best);
+  document.getElementById('wfxMut').textContent=wcf(mult)+'×';
+  document.getElementById('wfxResult').textContent=fmt(income);
+  const wmb=document.getElementById('wfxMutBreak');
+  if(fateSel.size===0){ wmb.innerHTML='Pick some mutations to see this filled in.'; }
+  else{
+    const vals=[...fateSel].map(i=>MUTATIONS[i].val).sort((a,b)=>b-a);
+    const bv=vals[0], rest=vals.slice(1).reduce((a,b)=>a+b,0), n=vals.length;
+    wmb.innerHTML=`<span class="hl-best">${bv}</span> + ¼ × ( <span class="hl-rest">${rest}</span> − ${n-1} ) = <b>${wcf(mult)}×</b>`;
+  }
 }
 document.getElementById('fCustom').addEventListener('change',e=>{
   document.getElementById('fInheritWrap').classList.toggle('hidden',e.target.checked);
@@ -879,7 +1029,21 @@ function closeIO(){ $id('ioModal').classList.remove('open'); }
 $id('ioToggle').addEventListener('click',openIO);
 $id('ioClose').addEventListener('click',closeIO);
 $id('ioModal').addEventListener('click',e=>{ if(e.target===$id('ioModal')) closeIO(); });
-document.addEventListener('keydown',e=>{ if(e.key==='Escape') closeIO(); });
+document.addEventListener('keydown',e=>{ if(e.key==='Escape'){ closeIO(); closeFx(); } });
+
+// ---------- FORMULA MODAL ----------
+function openFx(which){
+  const fate=which==='fate';
+  $id('fxMainSection').classList.toggle('hidden',fate);
+  $id('fxFateSection').classList.toggle('hidden',!fate);
+  $id('fxModalTitle').textContent=fate?'How Woven Fate income works':'How dumpling income works';
+  $id('fxModal').classList.add('open');
+}
+function closeFx(){ $id('fxModal').classList.remove('open'); }
+$id('fxOpenMain').addEventListener('click',()=>openFx('main'));
+$id('fxOpenFate').addEventListener('click',()=>openFx('fate'));
+$id('fxClose').addEventListener('click',closeFx);
+$id('fxModal').addEventListener('click',e=>{ if(e.target===$id('fxModal')) closeFx(); });
 
 // auto-load a build shared via URL (e.g. ...#s=DUMP1-xxxx)
 (function(){
