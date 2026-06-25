@@ -57,6 +57,26 @@
   .tab.active{color:#fff;background:linear-gradient(135deg,var(--grape),var(--grape-dark));border-color:transparent;box-shadow:0 8px 20px rgba(155,48,217,.35);}
   .panel.hidden{display:none;}
 
+  .saverow{display:flex;gap:10px;justify-content:center;align-items:center;flex-wrap:wrap;margin:14px 0 0;}
+  .save-toggle{display:flex;align-items:center;gap:11px;background:var(--card);border:2px solid var(--line);border-radius:99px;padding:6px 9px 6px 16px;font-family:'Fredoka',sans-serif;font-weight:500;font-size:14px;color:var(--ink);box-shadow:var(--shadow-sm);}
+  .switch.sm{width:42px;height:23px;}
+  .switch.sm .slider:before{width:17px;height:17px;}
+  .switch.sm input:checked + .slider:before{transform:translateX(19px);}
+  .save-now,.reset-now{font-family:'Fredoka',sans-serif;font-weight:500;font-size:14px;border:2px solid var(--line);border-radius:99px;padding:8px 22px;cursor:pointer;background:var(--card);color:var(--ink);box-shadow:var(--shadow-sm);transition:transform .14s,border-color .14s,filter .14s;}
+  .save-now{background:linear-gradient(135deg,var(--money),var(--money-dark));color:#fff;border-color:transparent;box-shadow:0 6px 16px rgba(15,191,94,.3);}
+  .save-now:hover{transform:translateY(-1px);filter:brightness(1.06);}
+  .reset-now{color:#e0566e;border-color:color-mix(in srgb,#e0566e 38%,var(--line));}
+  .reset-now:hover{transform:translateY(-1px);border-color:#e0566e;}
+  .reset-now.armed{background:#e0566e;color:#fff;border-color:#e0566e;box-shadow:0 6px 16px rgba(224,86,110,.35);}
+  .save-now.hidden{display:none;}
+  .warn{display:flex;gap:10px;align-items:flex-start;margin:0 0 16px;background:color-mix(in srgb,#e0455e 12%,transparent);border:1.5px solid color-mix(in srgb,#e0455e 48%,var(--line));border-radius:13px;padding:11px 14px;font-weight:700;font-size:12.5px;color:#e0566e;line-height:1.5;}
+  .warn .wic{flex:none;font-size:15px;line-height:1.3;}
+  .warn b{color:#e0566e;font-weight:800;}
+  .io-row-btn{display:inline-flex;align-items:center;gap:8px;font-family:'Fredoka',sans-serif;font-weight:500;font-size:14px;border:2px solid var(--line);border-radius:99px;padding:8px 18px;cursor:pointer;background:var(--card);color:var(--ink);box-shadow:var(--shadow-sm);transition:transform .14s,border-color .14s;}
+  .io-row-btn:hover{transform:translateY(-1px);border-color:var(--grape);}
+  .io-row-btn .ic{display:inline-flex;align-items:center;color:var(--grape);}
+  .io-row-btn .ic svg{width:16px;height:16px;}
+
   .readout{margin:18px 0 24px;border-radius:28px;padding:32px 24px 26px;background:var(--readout-bg);box-shadow:var(--shadow);text-align:center;position:relative;overflow:hidden;border:1px solid var(--line);}
   .readout:before{content:"";position:absolute;inset:0;pointer-events:none;background:radial-gradient(460px 180px at 50% -50px, rgba(155,48,217,.13), transparent 70%);}
   .readout .label{font-family:'Fredoka',sans-serif;font-weight:500;color:var(--muted);font-size:13px;letter-spacing:.8px;text-transform:uppercase;}
@@ -104,6 +124,48 @@
   .dd-item{padding:9px 11px;border-radius:9px;font-weight:700;font-size:14px;color:var(--ink);cursor:pointer;transition:background .12s;}
   .dd-item:hover{background:var(--grape-soft);}
   .dd-item.sel{background:var(--grape-soft);color:var(--grape);}
+
+  /* dumpling picker */
+  .dpick-btn .dd-val{font-family:'Fredoka',sans-serif;font-weight:600;}
+  .modal.dpick-modal{width:min(900px,94vw);max-width:900px;padding:24px 26px;overflow-x:hidden;}
+  .dpick-modal::-webkit-scrollbar{width:9px;}
+  .dpick-modal::-webkit-scrollbar-thumb{background:color-mix(in srgb,var(--grape) 45%,var(--line));border-radius:99px;}
+  .dpick-body{display:flex;gap:22px;margin-top:12px;min-height:380px;}
+  .dpick-boxes{display:flex;flex-direction:column;gap:8px;width:200px;flex:none;max-height:66vh;overflow-y:auto;overflow-x:hidden;padding:2px 9px 2px 2px;scrollbar-width:thin;scrollbar-color:var(--line) transparent;}
+  .dpick-boxes::-webkit-scrollbar{width:9px;}
+  .dpick-boxes::-webkit-scrollbar-track{background:transparent;margin:4px 0;}
+  .dpick-boxes::-webkit-scrollbar-thumb{background:color-mix(in srgb,var(--grape) 45%,var(--line));border-radius:99px;border:2px solid transparent;background-clip:padding-box;}
+  .dpick-boxes::-webkit-scrollbar-thumb:hover{background:var(--grape);background-clip:padding-box;border:2px solid transparent;}
+  .dpick-box{position:relative;overflow:hidden;display:flex;align-items:center;justify-content:space-between;gap:10px;min-height:46px;font-family:'Fredoka',sans-serif;font-weight:500;font-size:15px;color:var(--ink);background:var(--chip-bg);border:2px solid var(--line);border-radius:14px;padding:0 14px 0 20px;cursor:pointer;text-align:left;transition:transform .14s,border-color .14s,box-shadow .14s;}
+  .dpick-box>span:first-child{flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+  .dpick-box::before{content:"";position:absolute;left:0;top:0;bottom:0;width:8px;background:var(--bg);}
+  .dpick-box:hover{border-color:var(--bc);transform:translateY(-1px);}
+  .dpick-box.on{color:#fff;background:var(--bg);border-color:#fff;box-shadow:0 0 0 2px var(--bc),0 6px 18px color-mix(in srgb,var(--bc) 50%,transparent);text-shadow:0 1px 0 #000,0 -1px 0 #000,1px 0 0 #000,-1px 0 0 #000,0 2px 3px rgba(0,0,0,.45);}
+  .dpick-box.on::before{display:none;}
+  .dpick-box-n{font-family:'Nunito',sans-serif;font-weight:800;font-size:11.5px;color:var(--bc);background:color-mix(in srgb,var(--bc) 18%,transparent);border-radius:99px;padding:2px 9px;flex:none;}
+  .dpick-box.on .dpick-box-n{color:#fff;background:rgba(0,0,0,.3);text-shadow:none;}
+  .dpick-dumps{flex:1;min-width:0;container-type:inline-size;display:flex;flex-direction:column;}
+  .dpick-back{display:none;align-items:center;gap:5px;font-family:'Fredoka',sans-serif;font-weight:500;font-size:14px;color:var(--grape);background:none;border:none;cursor:pointer;padding:0 0 14px;}
+  .dpick-back svg{width:18px;height:18px;}
+  .dpick-dump-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;flex:1;align-content:stretch;grid-auto-rows:1fr;}
+  .dump-card{position:relative;overflow:hidden;display:flex;flex-direction:column;justify-content:center;gap:9px;min-height:96px;text-align:left;background:linear-gradient(160deg,color-mix(in srgb,var(--rc) 11%,var(--card)),var(--card) 70%);border:2px solid var(--line);border-left:6px solid var(--rc);border-radius:18px;padding:15px 17px;cursor:pointer;transition:transform .14s,border-color .14s,box-shadow .14s,background .14s;}
+  .dump-card:hover{border-color:var(--rc);transform:translateY(-2px);box-shadow:0 8px 20px color-mix(in srgb,var(--rc) 22%,transparent);}
+  .dump-card.on{background:linear-gradient(160deg,color-mix(in srgb,var(--rc) 26%,var(--card)),color-mix(in srgb,var(--rc) 8%,var(--card)));border-color:var(--rc);box-shadow:0 0 0 1px var(--rc),0 8px 22px color-mix(in srgb,var(--rc) 34%,transparent);}
+  .dump-dot{position:absolute;top:14px;right:14px;width:11px;height:11px;border-radius:50%;background:var(--rc);box-shadow:0 0 0 4px color-mix(in srgb,var(--rc) 22%,transparent);}
+  .dump-nm{font-family:'Fredoka',sans-serif;font-weight:600;font-size:16px;color:var(--rc);line-height:1.22;padding-right:16px;overflow-wrap:break-word;}
+  .dump-base{align-self:flex-start;font-weight:800;font-size:12px;letter-spacing:.3px;white-space:nowrap;color:var(--muted);background:color-mix(in srgb,var(--muted) 16%,transparent);border:1.5px solid transparent;border-radius:99px;padding:4px 12px;}
+  .dump-base.known{color:var(--money);background:color-mix(in srgb,var(--money) 20%,transparent);border-color:color-mix(in srgb,var(--money) 45%,transparent);box-shadow:0 0 14px color-mix(in srgb,var(--money) 28%,transparent);text-shadow:0 0 10px color-mix(in srgb,var(--money) 45%,transparent);}
+  .dpick-empty{grid-column:1/-1;color:var(--muted);font-weight:700;font-size:13.5px;text-align:center;padding:70px 12px;line-height:1.5;}
+  @container (min-width:460px){ .dpick-dump-grid{grid-template-columns:repeat(3,minmax(0,1fr));} }
+  @media(max-width:560px){
+    .modal.dpick-modal{max-width:none;}
+    .dpick-body{display:block;min-height:auto;}
+    .dpick-boxes{width:auto;max-height:64vh;}
+    .dpick-dumps{display:none;}
+    .dpick-body[data-view="dumps"] .dpick-boxes{display:none;}
+    .dpick-body[data-view="dumps"] .dpick-dumps{display:block;}
+    .dpick-back{display:flex;}
+  }
 
   /* mutation chips */
   .muts{display:grid;grid-template-columns:repeat(auto-fill,minmax(120px,1fr));gap:10px;}
@@ -256,7 +318,6 @@
 </head>
 <body>
 <button class="theme-btn" id="themeToggle" title="Toggle theme">🌙</button>
-<button class="io-btn" id="ioToggle" data-icon="io" title="Import / export setup"></button>
 <div class="wrap">
 
   <header>
@@ -269,6 +330,13 @@
     <button class="tab active" data-tab="income" data-icon="coins">Income</button>
     <button class="tab" data-tab="base" data-icon="search">Base Finder</button>
   </nav>
+
+  <div class="saverow">
+    <label class="save-toggle"><span>Autosave</span><span class="switch sm"><input type="checkbox" id="autosaveChk" checked><span class="slider"></span></span></label>
+    <button type="button" id="ioToggle" class="io-row-btn"><span class="ic" data-icon="io"></span>Import / Export</button>
+    <button type="button" id="saveBtn" class="save-now hidden">Save</button>
+    <button type="button" id="resetBtn" class="reset-now">Reset</button>
+  </div>
 
   <section id="tab-income" class="panel">
   <div class="readout">
@@ -424,6 +492,7 @@
 
       <div class="card span2">
         <h2><span class="ic" data-icon="sparkles"></span>Cosmetics</h2>
+        <div class="warn"><span class="wic">⚠</span><span>Reading income off a dumpling on the <b>podium (stairs)</b>? Leave cosmetics at <b>None</b>. The podium shows income <b>without</b> cosmetics.</span></div>
         <div class="cos-grid" id="bCosGrid"></div>
         <div class="cos-total">Total bonus <b id="bCosTotal">+0%</b></div>
       </div>
@@ -670,11 +739,187 @@ const PETS = [
   {name:"Pegasus",    max:null, rarity:"gold"},
   {name:"Lil' Dragon",max:null, rarity:"gold"},
 ];
-const PRESETS = [
-  {label:"Brown Uncommon Squishy",num:10,exp:0},
-  {label:"Crystal Princess",num:0.25,exp:36},
-  {label:"Diamond Crown Princess",num:0.75,exp:36},
+// rarity is shown by name colour (matches the in-game index colours)
+const RARITY = {
+  common:   {c:"#9aa0aa", label:"Common"},
+  uncommon: {c:"#5fd66b", label:"Uncommon"},
+  rare:     {c:"#4db8ff", label:"Rare"},
+  epic:     {c:"#b07fff", label:"Epic"},
+  legendary:{c:"#ffce2e", label:"Legendary"},
+  mythic:   {c:"#ff4d57", label:"Mythic"},
+};
+// Boxes, in the in-game order but REVERSED so "Other" sits on top.
+// base = num * 10^exp (raw base income per level). Unknown bases left at 0 for now.
+const BOXES = [
+  {name:"Other", color:"#9aa0aa", bg:"linear-gradient(180deg,#aab0bb 0%,#c7ccd4 50%,#8f96a2 100%)", dumplings:[
+    {name:"Stellar Squishy",        rarity:"legendary", num:75,  exp:18},
+    {name:"Prisma Puff",            rarity:"legendary", num:750,  exp:21},
+    {name:"Flapjack Flop",          rarity:"uncommon",  num:75,  exp:33},
+    {name:"Regal Rainbow",          rarity:"rare",      num:250,  exp:9},
+    {name:"Honey Drop",             rarity:"epic",      num:350,  exp:33},
+    {name:"Prickly Puff",           rarity:"legendary", num:250,  exp:15},
+    {name:"Majestic Dragon",        rarity:"mythic",    num:1.5,  exp:36},
+    {name:"Faedrop Sprout",         rarity:"mythic",    num:5,  exp:36},
+  ]},
+  {name:"Princess Box", color:"#b06ecb", bg:"linear-gradient(180deg,#9a55b8 0%,#c48ddc 50%,#7e3f9b 100%)", dumplings:[
+    {name:"Daisy Princess",         rarity:"common",    num:25,    exp:33},
+    {name:"Rosie Princess",         rarity:"common",    num:40,    exp:33},
+    {name:"Bluebell Princess",      rarity:"uncommon",  num:65,    exp:33},
+    {name:"Sapphire Princess",      rarity:"rare",      num:125,    exp:33},
+    {name:"Crystal Princess",       rarity:"epic",      num:250, exp:33},
+    {name:"Diamond Crown Princess", rarity:"legendary", num:750, exp:33},
+  ]},
+  {name:"Dessert Box", color:"#c8506a", bg:"linear-gradient(180deg,#a83048 0%,#d05f76 50%,#7c2236 100%)", dumplings:[
+    {name:"Strawberry Shortcake",   rarity:"common",    num:25, exp:30},
+    {name:"Mango Pudding",          rarity:"common",    num:40, exp:30},
+    {name:"Caramel Flan",           rarity:"uncommon",  num:65, exp:30},
+    {name:"Banana Split",           rarity:"rare",      num:125, exp:30},
+    {name:"Matcha Roll",            rarity:"epic",      num:250, exp:30},
+    {name:"Blueberry Parfait",      rarity:"legendary", num:750, exp:30},
+  ]},
+  {name:"Nekomata Box", color:"#f2c200", bg:"linear-gradient(180deg,#f2c200 0%,#fde66a 48%,#d49a00 100%)", dumplings:[
+    {name:"Tabby Sprout",           rarity:"common",    num:25, exp:27},
+    {name:"Honey Sunpaw",           rarity:"common",    num:40, exp:27},
+    {name:"Jade Nekomata",          rarity:"uncommon",  num:65, exp:27},
+    {name:"Rose Pouncer",           rarity:"rare",      num:125, exp:27},
+    {name:"Crimson Kitsune",        rarity:"epic",      num:250, exp:27},
+    {name:"Sapphire Seraph",        rarity:"legendary", num:750, exp:27},
+  ]},
+  {name:"Fairy Box", color:"#4fb0ff", bg:"linear-gradient(90deg,#4b6cff 0%,#3fd07a 30%,#ffe14d 55%,#ff8a2b 78%,#ff3b50 100%)", dumplings:[
+    {name:"Petal Pixie",            rarity:"common",    num:25, exp:24},
+    {name:"Mossy Sprout Sprite",    rarity:"common",    num:40, exp:24},
+    {name:"Twilight Fae",           rarity:"uncommon",  num:65, exp:24},
+    {name:"Sunblossom Fairy",       rarity:"rare",      num:125, exp:24},
+    {name:"Starlit Sparkle",        rarity:"epic",      num:250, exp:24},
+    {name:"Enchanted Fairy Queen",  rarity:"legendary", num:750, exp:24},
+  ]},
+  {name:"Dragon Box", color:"#ff6a2b", bg:"linear-gradient(135deg,#ffb24d 0%,#ff7a2b 45%,#e23c2e 100%)", dumplings:[
+    {name:"Ember Hatchling",        rarity:"common",    num:25, exp:21},
+    {name:"Leafy Wyrmling",         rarity:"common",    num:40, exp:21},
+    {name:"Rainbow Twinflame",      rarity:"uncommon",  num:65, exp:21},
+    {name:"Tide Leviathan",         rarity:"rare",      num:125, exp:21},
+    {name:"Gemheart Dragon",        rarity:"epic",      num:250, exp:21},
+    {name:"Sovereign Dragon",       rarity:"legendary", num:750, exp:21},
+  ]},
+  {name:"Angel Box", color:"#9fb8e8", bg:"linear-gradient(90deg,#bcd0f5 0%,#fbf2e6 40%,#ffe2d0 65%,#cfdcf7 100%)", dumplings:[
+    {name:"Pink Cherub",            rarity:"common",    num:25, exp:18},
+    {name:"Lil' Cupid",             rarity:"common",    num:40, exp:18},
+    {name:"Halo Sweetheart",        rarity:"uncommon",  num:65, exp:18},
+    {name:"Starlight Guardian",     rarity:"rare",      num:125, exp:18},
+    {name:"Radiant Archangel",      rarity:"epic",      num:250, exp:18},
+    {name:"Seraphim",               rarity:"legendary", num:750, exp:18},
+  ]},
+  {name:"Unicorn Box", color:"#d9b8f0", bg:"linear-gradient(90deg,#f7b8d6 0%,#fbd6b0 22%,#fef3b0 42%,#bfeec2 62%,#bcd9f7 80%,#d9c2f5 100%)", dumplings:[
+    {name:"Classic Unicorn",        rarity:"common",    num:25, exp:15},
+    {name:"Pinky Unicorn",          rarity:"common",    num:40, exp:15},
+    {name:"Ocean Unicorn",          rarity:"uncommon",  num:65, exp:15},
+    {name:"Starry Unicorn",         rarity:"rare",      num:125, exp:15},
+    {name:"Milky Way Unicorn",      rarity:"epic",      num:250, exp:15},
+    {name:"Alicorn",                rarity:"legendary", num:750, exp:15},
+  ]},
+  {name:"Candy Box", color:"#f3a8d0", bg:"linear-gradient(90deg,#f7c6e0 0%,#c9efd0 45%,#c6d4f7 100%)", dumplings:[
+    {name:"Cotton Candy",           rarity:"common",    num:25, exp:12},
+    {name:"Honeycomb Bite",         rarity:"common",    num:40, exp:12},
+    {name:"Candy Cane",             rarity:"uncommon",  num:65, exp:12},
+    {name:"Minty Twist",            rarity:"rare",      num:125, exp:12},
+    {name:"Gummy Bear",             rarity:"epic",      num:250, exp:12},
+    {name:"Tropical Mix",           rarity:"legendary", num:750, exp:12},
+  ]},
+  {name:"Radioactive Box", color:"#8fe61f", bg:"linear-gradient(180deg,#8ee62a 0%,#c4ff5a 48%,#5fb015 100%)", dumplings:[
+    {name:"Glowy Gummy",            rarity:"common",    num:25, exp:9},
+    {name:"Atomic Acorn",           rarity:"common",    num:40, exp:9},
+    {name:"Plutonium Plushie",      rarity:"uncommon",  num:65, exp:9},
+    {name:"Uranium Unicorn",        rarity:"rare",      num:125, exp:9},
+    {name:"Geiger Cookie",          rarity:"epic",      num:250, exp:9},
+    {name:"Lil' Mushroom Cloud",    rarity:"legendary", num:750, exp:9},
+  ]},
+  {name:"Heart Box", color:"#ff6fb0", bg:"linear-gradient(180deg,#ff7ac0 0%,#ef58a0 50%,#c52d7a 100%)", dumplings:[
+    {name:"Blushing Petal",         rarity:"common",    num:0, exp:0},
+    {name:"Sweet Whisper",          rarity:"common",    num:0, exp:0},
+    {name:"Cherry Blossom",         rarity:"uncommon",  num:0, exp:0},
+    {name:"Lavender Dream",         rarity:"rare",      num:0, exp:0},
+    {name:"Crystal Heart",          rarity:"epic",      num:2, exp:9},
+    {name:"Eternal Bloom",          rarity:"legendary", num:7.5, exp:9},
+  ]},
+  {name:"Dreamweave Box", color:"#9b7fe0", bg:"linear-gradient(180deg,#9a7fe6 0%,#b89ff0 50%,#6f4fc8 100%)", dumplings:[
+    {name:"Sugar Pop",              rarity:"common",    num:0, exp:0},
+    {name:"Peppermint",             rarity:"common",    num:0, exp:0},
+    {name:"Thunderpuff",            rarity:"uncommon",  num:0, exp:0},
+    {name:"Spellbound",             rarity:"rare",      num:0, exp:0},
+    {name:"Astro",                  rarity:"epic",      num:0, exp:0},
+    {name:"Cloudhorn",              rarity:"legendary", num:3, exp:9},
+  ]},
+  {name:"Nebula Box", color:"#4fa8e8", bg:"linear-gradient(120deg,#3f8fe8 0%,#5fc8e8 60%,#3a6fc8 100%)", dumplings:[
+    {name:"Azure Droplet",          rarity:"common",    num:0, exp:0},
+    {name:"Glacial Shard",          rarity:"common",    num:0, exp:0},
+    {name:"Starburst Comet",        rarity:"uncommon",  num:0, exp:0},
+    {name:"Aurora Astro",           rarity:"rare",      num:0, exp:0},
+    {name:"Spectra Charm",          rarity:"epic",      num:0, exp:0},
+    {name:"Amethyst Prisma",        rarity:"legendary", num:1.25, exp:9},
+  ]},
+  {name:"Animal Box", color:"#ff6a8a", bg:"linear-gradient(90deg,#ff4d9e 0%,#ff7a4d 100%)", dumplings:[
+    {name:"Zebra Squishy",          rarity:"common",    num:0, exp:0},
+    {name:"Tiger Squishy",          rarity:"common",    num:0, exp:0},
+    {name:"Giraffe Squishy",        rarity:"uncommon",  num:0, exp:0},
+    {name:"Alligator Squishy",      rarity:"rare",      num:0, exp:0},
+    {name:"Flamingo Squishy",       rarity:"epic",      num:0, exp:0},
+    {name:"Parrot Squishy",         rarity:"legendary", num:0, exp:0},
+  ]},
+  {name:"Cosmic Box", color:"#7d5fe0", bg:"linear-gradient(135deg,#8a4fd9 0%,#5560d8 55%,#6a3fc8 100%)", dumplings:[
+    {name:"Blue Cosmic Squishy",    rarity:"common",    num:0, exp:0},
+    {name:"Orange Cosmic Squishy",  rarity:"common",    num:0, exp:0},
+    {name:"Pink Cosmic Squishy",    rarity:"uncommon",  num:0, exp:0},
+    {name:"Purplish Cosmic Squishy",rarity:"rare",      num:0, exp:0},
+    {name:"Purple Cosmic Squishy",  rarity:"epic",      num:0, exp:0},
+    {name:"Rarest Cosmic Squishy",  rarity:"legendary", num:0, exp:0},
+  ]},
+  {name:"Epic Box", color:"#e0662a", bg:"linear-gradient(180deg,#e0762a 0%,#c24a1c 55%,#8f2f12 100%)", dumplings:[
+    {name:"Red Epic Squishy",       rarity:"common",    num:0, exp:0},
+    {name:"Green Epic Squishy",     rarity:"common",    num:0, exp:0},
+    {name:"Blue Epic Squishy",      rarity:"uncommon",  num:0, exp:0},
+    {name:"Purple Epic Squishy",    rarity:"rare",      num:0, exp:0},
+    {name:"Black Epic Squishy",     rarity:"epic",      num:0, exp:0},
+    {name:"Colorful Epic Squishy",  rarity:"legendary", num:0, exp:0},
+  ]},
+  {name:"Apocalypse Box", color:"#9a4a2e", bg:"linear-gradient(180deg,#7a5238 0%,#8a3320 55%,#33201a 100%)", dumplings:[
+    {name:"Scrap Metal",            rarity:"common",    num:0, exp:0},
+    {name:"Molotov",                rarity:"common",    num:0, exp:0},
+    {name:"Copper Wire",            rarity:"uncommon",  num:0, exp:0},
+    {name:"Piercer",                rarity:"rare",      num:0, exp:0},
+    {name:"Cogwheel",               rarity:"epic",      num:0, exp:0},
+    {name:"Shredder",               rarity:"legendary", num:0, exp:0},
+  ]},
+  {name:"Rare Box", color:"#4caf50", bg:"linear-gradient(180deg,#46b84e 0%,#6fd06a 50%,#2e8a36 100%)", dumplings:[
+    {name:"Brown Rare Squishy",     rarity:"common",    num:0, exp:0},
+    {name:"Green Rare Squishy",     rarity:"common",    num:0, exp:0},
+    {name:"Red Rare Squishy",       rarity:"uncommon",  num:0, exp:0},
+    {name:"Purple Rare Squishy",    rarity:"rare",      num:0, exp:0},
+    {name:"Black Rare Squishy",     rarity:"epic",      num:0, exp:0},
+    {name:"Flower Rare Squishy",    rarity:"legendary", num:0, exp:0},
+  ]},
+  {name:"Uncommon Box", color:"#ff9a2b", bg:"linear-gradient(180deg,#ffa42b 0%,#ffc25a 50%,#e07a14 100%)", dumplings:[
+    {name:"Brown Uncommon Squishy",      rarity:"common",    num:10, exp:0},
+    {name:"White Uncommon Squishy",      rarity:"common",    num:0,  exp:0},
+    {name:"Yellow Uncommon Squishy",     rarity:"uncommon",  num:0,  exp:0},
+    {name:"Blue Uncommon Squishy",       rarity:"rare",      num:0,  exp:0},
+    {name:"Light Blue Uncommon Squishy", rarity:"epic",      num:0,  exp:0},
+    {name:"Orange Uncommon Squishy",     rarity:"legendary", num:0,  exp:0},
+  ]},
+  {name:"Common Box", color:"#cdbb92", bg:"linear-gradient(180deg,#d9c8a6 0%,#efe4c8 50%,#c2ad82 100%)", dumplings:[
+    {name:"Green Squishy",          rarity:"common",    num:0.75, exp:0},
+    {name:"Brown Squishy",          rarity:"common",    num:1, exp:0},
+    {name:"Red Squishy",            rarity:"uncommon",  num:1.5, exp:0},
+    {name:"Blue Squishy",           rarity:"rare",      num:3, exp:0},
+    {name:"Red Glitty Squishy",     rarity:"epic",      num:6, exp:0},
+    {name:"Purple Glitty Squishy",  rarity:"legendary", num:12.5, exp:0},
+  ]},
 ];
+// sort every box's dumplings by base value (highest first -> top-left; TBD last)
+BOXES.forEach(box=>box.dumplings.sort((a,b)=>(b.num*Math.pow(10,b.exp))-(a.num*Math.pow(10,a.exp))));
+// flat list so the picker can address a dumpling by a single index
+const DUMPLINGS = [];
+BOXES.forEach((box,bi)=>box.dumplings.forEach((d,di)=>{ d.boxIdx=bi; d.dumpIdx=di; d._flat=DUMPLINGS.length; DUMPLINGS.push(d); }));
+const DEFAULT_DUMPLING = Math.max(0, DUMPLINGS.findIndex(d=>d.name==='Diamond Crown Princess'));
 const SUFFIX = [
   {s:"",exp:0},{s:"K",exp:3},{s:"M",exp:6},{s:"B",exp:9},{s:"T",exp:12},
   {s:"Qa",exp:15},{s:"Qi",exp:18},{s:"Sx",exp:21},{s:"Sp",exp:24},{s:"Oc",exp:27},
@@ -696,11 +941,14 @@ function fmt(n){
 function fmtBase(n){
   if(!isFinite(n)||n<=0) return "$0";
   const log=Math.log10(n); let ti=0;
-  for(let i=0;i<SUFFIX.length;i++){ if(log>=SUFFIX[i].exp-1) ti=i; else break; }
+  for(let i=0;i<SUFFIX.length;i++){ if(log>=SUFFIX[i].exp) ti=i; else break; }
   let tier=SUFFIX[ti],mant=n/Math.pow(10,tier.exp);
   const dec=m=>m>=100?0:(m>=10?1:2);
   let r=Math.round(mant*Math.pow(10,dec(mant)))/Math.pow(10,dec(mant));
-  return "$"+r.toFixed(dec(r))+(tier.s?" "+tier.s:"");
+  if(r>=1000&&ti<SUFFIX.length-1){tier=SUFFIX[ti+1];mant=n/Math.pow(10,tier.exp);r=Math.round(mant*Math.pow(10,dec(mant)))/Math.pow(10,dec(mant));}
+  let s=r.toFixed(dec(r));
+  if(s.indexOf('.')>=0) s=s.replace(/0+$/,'').replace(/\.$/,'');
+  return "$"+s+(tier.s?" "+tier.s:"");
 }
 function mutInfo(sel){
   const idxs=[...sel]; if(idxs.length===0) return {mult:1,bestIdx:-1};
@@ -802,6 +1050,78 @@ function makeDropdown(target,opts,initial,onChange){
   render(); mark(); target.appendChild(wrap);
   return { get value(){return cur;}, set value(v){cur=v;render();mark();} };
 }
+
+// Box + dumpling popup picker. value = index into DUMPLINGS.
+function makeDumplingPicker(target,initial,onChange){
+  let cur=initial, viewBox=DUMPLINGS[cur]?DUMPLINGS[cur].boxIdx:0;
+  const chevDown='<svg class="dd-chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>';
+  const chevLeft='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>';
+
+  const btn=document.createElement('button'); btn.type='button'; btn.className='dd-btn dpick-btn';
+  function renderBtn(){
+    const d=DUMPLINGS[cur], r=d?RARITY[d.rarity]:null, col=r?r.c:'var(--ink)';
+    btn.innerHTML='<span class="dd-val" style="color:'+col+'">'+(d?d.name:'Select a dumpling…')+'</span>'+chevDown;
+  }
+
+  const overlay=document.createElement('div'); overlay.className='modal-overlay';
+  overlay.innerHTML=
+    '<div class="modal dpick-modal">'+
+      '<div class="modal-head"><h3><span class="modal-ic">'+icon('coins')+'</span>Choose a dumpling</h3>'+
+      '<button class="modal-close" type="button" data-close aria-label="Close">×</button></div>'+
+      '<div class="dpick-body" data-view="boxes">'+
+        '<div class="dpick-boxes"></div>'+
+        '<div class="dpick-dumps">'+
+          '<button type="button" class="dpick-back">'+chevLeft+'Boxes</button>'+
+          '<div class="dpick-dump-grid"></div>'+
+        '</div>'+
+      '</div>'+
+    '</div>';
+  document.body.appendChild(overlay);
+  const body=overlay.querySelector('.dpick-body');
+  const boxesEl=overlay.querySelector('.dpick-boxes');
+  const gridEl=overlay.querySelector('.dpick-dump-grid');
+
+  function renderBoxes(){
+    boxesEl.innerHTML='';
+    BOXES.forEach((box,bi)=>{
+      const b=document.createElement('button'); b.type='button';
+      b.className='dpick-box'+(bi===viewBox?' on':'');
+      b.style.setProperty('--bc',box.color||'#9aa0aa');
+      b.style.setProperty('--bg',box.bg||box.color||'#9aa0aa');
+      b.innerHTML='<span>'+box.name+'</span><span class="dpick-box-n">'+box.dumplings.length+'</span>';
+      b.addEventListener('click',()=>{ viewBox=bi; renderBoxes(); renderDumps(); body.dataset.view='dumps'; });
+      boxesEl.appendChild(b);
+    });
+  }
+  function renderDumps(){
+    gridEl.innerHTML='';
+    const box=BOXES[viewBox];
+    if(!box.dumplings.length){
+      gridEl.innerHTML='<div class="dpick-empty">No dumplings added yet for '+box.name+'.</div>';
+      return;
+    }
+    box.dumplings.forEach(d=>{
+      const r=RARITY[d.rarity]||RARITY.common;
+      const card=document.createElement('button'); card.type='button';
+      card.className='dump-card'+(d._flat===cur?' on':'');
+      card.style.setProperty('--rc',r.c);
+      const baseTxt=d.num>0?(fmtBase(d.num*Math.pow(10,d.exp))+'/lvl'):'Base TBD';
+      card.innerHTML='<span class="dump-dot"></span><span class="dump-nm">'+d.name+'</span><span class="dump-base'+(d.num>0?' known':'')+'">'+baseTxt+'</span>';
+      card.addEventListener('click',()=>{ cur=d._flat; renderBtn(); close(); onChange(); });
+      gridEl.appendChild(card);
+    });
+  }
+  function open(){ viewBox=DUMPLINGS[cur]?DUMPLINGS[cur].boxIdx:0; body.dataset.view='boxes'; renderBoxes(); renderDumps(); overlay.classList.add('open'); }
+  function close(){ overlay.classList.remove('open'); }
+  btn.addEventListener('click',open);
+  overlay.addEventListener('click',e=>{ if(e.target===overlay) close(); });
+  overlay.querySelector('[data-close]').addEventListener('click',close);
+  overlay.querySelector('.dpick-back').addEventListener('click',()=>{ body.dataset.view='boxes'; });
+  document.addEventListener('keydown',e=>{ if(e.key==='Escape') close(); });
+
+  renderBtn(); target.appendChild(btn);
+  return { get value(){return cur;}, set value(v){ cur=+v; viewBox=DUMPLINGS[cur]?DUMPLINGS[cur].boxIdx:0; renderBtn(); } };
+}
 document.addEventListener('click',()=>{document.querySelectorAll('.dd-list.open').forEach(l=>l.classList.remove('open'));document.querySelectorAll('.dd-btn.open').forEach(b=>b.classList.remove('open'));});
 
 const magOpts=SUFFIX.map(u=>({value:u.exp,label:u.s===""?"— (ones)":u.s}));
@@ -813,14 +1133,14 @@ buildMuts(document.getElementById('muts'),mainSel,updateMain);
 const mainGrade=buildGrades(document.getElementById('grades'),1,updateMain);
 const mainCos=buildCosmetics(document.getElementById('cosGrid'),null,updateMain);
 const mainPets=buildPets(document.getElementById('petGrid'),updateMain);
-const presetDD=makeDropdown(document.getElementById('presetDD'),PRESETS.map((p,i)=>({value:i,label:p.label})),2,updateMain);
+const presetDD=makeDumplingPicker(document.getElementById('presetDD'),DEFAULT_DUMPLING,onDumplingChange);
 const baseMagDD=makeDropdown(document.getElementById('baseMagDD'),magOpts,36,updateMain);
 
 function getBase(){
   if(document.getElementById('customBase').checked){
     return (parseFloat(document.getElementById('base').value)||0)*Math.pow(10,+baseMagDD.value);
   }
-  const p=PRESETS[+presetDD.value]; return p.num*Math.pow(10,p.exp);
+  const d=DUMPLINGS[+presetDD.value]||{num:0,exp:0}; return d.num*Math.pow(10,d.exp);
 }
 function updateMain(){
   const level=Math.max(0,parseFloat(document.getElementById('level').value)||0);
@@ -866,6 +1186,7 @@ function updateMain(){
     mb.innerHTML=`<span class="hl-best">${bestVal}</span> + ¼ × ( <span class="hl-rest">${rest}</span> − ${n-1} ) = <b>${cf(mult)}×</b>`;
   }
   updateFate();
+  maybeAutosave();
 }
 document.getElementById('customBase').addEventListener('change',e=>{
   document.getElementById('presetWrap').classList.toggle('hidden',e.target.checked);
@@ -909,6 +1230,7 @@ function updateFate(){
     const bv=vals[0], rest=vals.slice(1).reduce((a,b)=>a+b,0), n=vals.length;
     wmb.innerHTML=`<span class="hl-best">${bv}</span> + ¼ × ( <span class="hl-rest">${rest}</span> − ${n-1} ) = <b>${wcf(mult)}×</b>`;
   }
+  maybeAutosave();
 }
 document.getElementById('fCustom').addEventListener('change',e=>{
   document.getElementById('fInheritWrap').classList.toggle('hidden',e.target.checked);
@@ -955,7 +1277,7 @@ function getPreset(){
     v:1,
     lvl:parseFloat($id('level').value)||0,
     cb:$id('customBase').checked?1:0,
-    ps:+presetDD.value,
+    ps:(DUMPLINGS[+presetDD.value]||{}).name||'',
     b:parseFloat($id('base').value)||0,
     bm:+baseMagDD.value,
     g:mainGrade.value,
@@ -987,7 +1309,7 @@ function applyPreset(o){
   $id('level').value=o.lvl!=null?o.lvl:1;
   $id('customBase').checked=!!o.cb;
   $id('customBase').dispatchEvent(new Event('change'));
-  if(o.ps!=null) presetDD.value=o.ps;
+  if(o.ps!=null){ const di=(typeof o.ps==='string')?DUMPLINGS.findIndex(d=>d.name===o.ps):-1; if(di>=0) presetDD.value=di; }
   $id('base').value=o.b!=null?o.b:0;
   if(o.bm!=null) baseMagDD.value=o.bm;
   if(o.g!=null) mainGrade.value=o.g;
@@ -1003,6 +1325,8 @@ function applyPreset(o){
   $id('fBest').value=f.best!=null?f.best:0;
   if(f.bm!=null) fBestMagDD.value=f.bm;
   fateSel.clear(); namesToIdx(f.muts).forEach(i=>{ if(i!==ADMIN_IDX) fateSel.add(i); });
+  currentDumpName = DUMPLINGS[presetDD.value] ? DUMPLINGS[presetDD.value].name : null;
+  if(currentDumpName) perDump[currentDumpName]=readDumpState();
   updateMain(); updateFate();
 }
 function flashStatus(msg,err){
@@ -1022,6 +1346,103 @@ $id('loadPreset').addEventListener('click',()=>{
   try{ applyPreset(decodePreset(src)); $id('presetCode').value=encodePreset(getPreset()); flashStatus('Setup loaded!'); }
   catch(e){ flashStatus('That code didn’t look right.',true); }
 });
+
+// ---------- SAVE / AUTOSAVE (per-dumpling settings + global passes/pets/fate) ----------
+const SAVE_KEY='dumplingBuildV2';
+let autosave=true, currentDumpName=null, perDump={};
+const DUMP_DEFAULT={lvl:1,g:1,cos:{head:0,body:0,tail:0},muts:[]};
+
+function readDumpState(){
+  return { lvl:parseFloat($id('level').value)||0, g:mainGrade.value, cos:mainCos.get(), muts:mutsToNames(mainSel) };
+}
+function writeDumpState(s){
+  s=s||DUMP_DEFAULT;
+  $id('level').value=s.lvl!=null?s.lvl:1;
+  if(s.g!=null) mainGrade.value=s.g;
+  mainCos.set(s.cos||DUMP_DEFAULT.cos);
+  mainSel.clear(); namesToIdx(s.muts||[]).forEach(i=>mainSel.add(i));
+}
+function readGlobal(){
+  return {
+    cash:$id('cash').checked?1:0, vip:$id('vip').checked?1:0,
+    pets:mainPets.get(),
+    cb:$id('customBase').checked?1:0, b:parseFloat($id('base').value)||0, bm:+baseMagDD.value,
+    f:{ lvl:parseFloat($id('fLevel').value)||0, cust:$id('fCustom').checked?1:0, best:parseFloat($id('fBest').value)||0, bm:+fBestMagDD.value, muts:mutsToNames(fateSel) }
+  };
+}
+function writeGlobal(g){
+  g=g||{};
+  $id('cash').checked=!!g.cash; $id('vip').checked=!!g.vip;
+  mainPets.load(g.pets||[]);
+  $id('customBase').checked=!!g.cb; $id('customBase').dispatchEvent(new Event('change'));
+  $id('base').value=g.b!=null?g.b:0.75; if(g.bm!=null) baseMagDD.value=g.bm;
+  const f=g.f||{};
+  $id('fLevel').value=f.lvl!=null?f.lvl:1;
+  $id('fCustom').checked=!!f.cust; $id('fCustom').dispatchEvent(new Event('change'));
+  $id('fBest').value=f.best!=null?f.best:90; if(f.bm!=null) fBestMagDD.value=f.bm;
+  fateSel.clear(); namesToIdx(f.muts||[]).forEach(i=>{ if(i!==ADMIN_IDX) fateSel.add(i); });
+}
+function buildSave(){
+  if(currentDumpName) perDump[currentDumpName]=readDumpState();
+  return { v:2, autosave:autosave?1:0, sel:currentDumpName, g:readGlobal(), d:perDump };
+}
+function persistNow(){ try{ localStorage.setItem(SAVE_KEY, JSON.stringify(buildSave())); }catch(e){} }
+let _saveT;
+function maybeAutosave(){ if(!autosave) return; clearTimeout(_saveT); _saveT=setTimeout(persistNow,150); }
+function updateSaveUI(){ $id('autosaveChk').checked=autosave; $id('saveBtn').classList.toggle('hidden',autosave); }
+
+function loadSavedBuild(){
+  let raw; try{ raw=localStorage.getItem(SAVE_KEY); }catch(e){ return false; }
+  if(!raw) return false;
+  let o; try{ o=JSON.parse(raw); }catch(e){ return false; }
+  autosave = o.autosave!=null ? !!o.autosave : true;
+  perDump = o.d||{};
+  writeGlobal(o.g||{});
+  const di = o.sel ? DUMPLINGS.findIndex(d=>d.name===o.sel) : -1;
+  if(di>=0) presetDD.value=di;
+  currentDumpName = DUMPLINGS[presetDD.value] ? DUMPLINGS[presetDD.value].name : null;
+  if(currentDumpName) writeDumpState(perDump[currentDumpName]);
+  return true;
+}
+
+// switching dumpling: stash outgoing per-dumpling settings, load the incoming one
+function onDumplingChange(){
+  const newName = DUMPLINGS[presetDD.value] ? DUMPLINGS[presetDD.value].name : null;
+  if(currentDumpName && currentDumpName!==newName) perDump[currentDumpName]=readDumpState();
+  currentDumpName=newName;
+  writeDumpState(currentDumpName ? perDump[currentDumpName] : DUMP_DEFAULT);
+  updateMain();
+  maybeAutosave();
+}
+
+function doSave(){ persistNow(); const b=$id('saveBtn'); if(b.dataset.busy) return; b.dataset.busy=1; const t=b.textContent; b.textContent='Saved ✓'; setTimeout(()=>{ b.textContent=t; b.dataset.busy=''; },1100); }
+function doReset(){
+  const b=$id('resetBtn');
+  if(b.dataset.armed!=='1'){
+    b.dataset.armed='1';
+    if(!b.dataset.label) b.dataset.label=b.textContent;
+    b.textContent='Confirm reset?';
+    b.classList.add('armed');
+    clearTimeout(doReset._t);
+    doReset._t=setTimeout(()=>{ b.dataset.armed=''; b.textContent=b.dataset.label||'Reset'; b.classList.remove('armed'); },3000);
+    return;
+  }
+  clearTimeout(doReset._t);
+  b.dataset.armed=''; b.textContent=b.dataset.label||'Reset'; b.classList.remove('armed');
+  try{ localStorage.removeItem(SAVE_KEY); }catch(e){}
+  perDump={};
+  writeGlobal({cash:0,vip:0,pets:[],cb:0,b:0.75,bm:36,f:{lvl:1,cust:0,best:90,bm:42,muts:[]}});
+  presetDD.value=DEFAULT_DUMPLING;
+  currentDumpName=DUMPLINGS[DEFAULT_DUMPLING]?DUMPLINGS[DEFAULT_DUMPLING].name:null;
+  writeDumpState(DUMP_DEFAULT);
+  autosave=true; updateSaveUI();
+  try{ history.replaceState(null,'',location.pathname+location.search); }catch(e){}
+  updateMain(); updateFate(); persistNow();
+}
+
+$id('autosaveChk').addEventListener('change',e=>{ autosave=e.target.checked; updateSaveUI(); if(autosave) persistNow(); });
+$id('saveBtn').addEventListener('click',doSave);
+$id('resetBtn').addEventListener('click',doReset);
 
 // ---------- IMPORT/EXPORT MODAL ----------
 function openIO(){ $id('presetCode').value=encodePreset(getPreset()); $id('pastePreset').value=''; $id('shareStatus').textContent=''; $id('ioModal').classList.add('open'); }
@@ -1045,10 +1466,20 @@ $id('fxOpenFate').addEventListener('click',()=>openFx('fate'));
 $id('fxClose').addEventListener('click',closeFx);
 $id('fxModal').addEventListener('click',e=>{ if(e.target===$id('fxModal')) closeFx(); });
 
-// auto-load a build shared via URL (e.g. ...#s=DUMP1-xxxx)
+// startup: a shared URL build loads with autosave OFF (manual save to keep it);
+// otherwise restore the locally saved build.
 (function(){
   const m=location.href.match(/DUMP1-[A-Za-z0-9_-]+/);
-  if(m){ try{ applyPreset(decodePreset(m[0])); }catch(e){} }
+  if(m){
+    try{ applyPreset(decodePreset(m[0])); }catch(e){}
+    autosave=false; perDump={};
+    currentDumpName = DUMPLINGS[presetDD.value] ? DUMPLINGS[presetDD.value].name : null;
+    if(currentDumpName) perDump[currentDumpName]=readDumpState();
+  } else {
+    try{ loadSavedBuild(); }catch(e){}
+    if(currentDumpName==null) currentDumpName = DUMPLINGS[presetDD.value] ? DUMPLINGS[presetDD.value].name : null;
+  }
+  updateSaveUI();
 })();
 
 // ---------- TABS ----------
