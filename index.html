@@ -156,6 +156,7 @@
   .dump-base{align-self:flex-start;font-weight:800;font-size:12px;letter-spacing:.3px;white-space:nowrap;color:var(--muted);background:color-mix(in srgb,var(--muted) 16%,transparent);border:1.5px solid transparent;border-radius:99px;padding:4px 12px;}
   .dump-base.known{color:var(--money);background:color-mix(in srgb,var(--money) 20%,transparent);border-color:color-mix(in srgb,var(--money) 45%,transparent);box-shadow:0 0 14px color-mix(in srgb,var(--money) 28%,transparent);text-shadow:0 0 10px color-mix(in srgb,var(--money) 45%,transparent);}
   .dpick-empty{grid-column:1/-1;color:var(--muted);font-weight:700;font-size:13.5px;text-align:center;padding:70px 12px;line-height:1.5;}
+  .dpick-note{margin:0 0 14px;background:color-mix(in srgb,var(--fate) 14%,transparent);border:1.5px solid color-mix(in srgb,var(--fate) 50%,var(--line));border-radius:12px;padding:10px 14px;font-weight:700;font-size:12.5px;color:var(--fate-dark);line-height:1.45;}
   @container (min-width:460px){ .dpick-dump-grid{grid-template-columns:repeat(3,minmax(0,1fr));} }
   @media(max-width:560px){
     .modal.dpick-modal{max-width:none;}
@@ -761,6 +762,14 @@ const BOXES = [
     {name:"Majestic Dragon",        rarity:"mythic",    num:1.5,  exp:36},
     {name:"Faedrop Sprout",         rarity:"mythic",    num:5,  exp:36},
   ]},
+  {name:"Next Box", color:"#6f8cff", bg:"linear-gradient(135deg,#8a6cff 0%,#5c8cff 50%,#6a4fe0 100%)", note:"Predicted bases. This box isn't out yet, so these follow the pattern and are estimates.", dumplings:[
+    {name:"Next Common",            rarity:"common",    num:25,  exp:36},
+    {name:"Next Common II",         rarity:"common",    num:40,  exp:36},
+    {name:"Next Uncommon",          rarity:"uncommon",  num:65,  exp:36},
+    {name:"Next Rare",              rarity:"rare",      num:125, exp:36},
+    {name:"Next Epic",              rarity:"epic",      num:250, exp:36},
+    {name:"Next Legendary",         rarity:"legendary", num:750, exp:36},
+  ]},
   {name:"Princess Box", color:"#b06ecb", bg:"linear-gradient(180deg,#9a55b8 0%,#c48ddc 50%,#7e3f9b 100%)", dumplings:[
     {name:"Daisy Princess",         rarity:"common",    num:25,    exp:33},
     {name:"Rosie Princess",         rarity:"common",    num:40,    exp:33},
@@ -1072,6 +1081,7 @@ function makeDumplingPicker(target,initial,onChange){
         '<div class="dpick-boxes"></div>'+
         '<div class="dpick-dumps">'+
           '<button type="button" class="dpick-back">'+chevLeft+'Boxes</button>'+
+          '<div class="dpick-note hidden"></div>'+
           '<div class="dpick-dump-grid"></div>'+
         '</div>'+
       '</div>'+
@@ -1080,6 +1090,7 @@ function makeDumplingPicker(target,initial,onChange){
   const body=overlay.querySelector('.dpick-body');
   const boxesEl=overlay.querySelector('.dpick-boxes');
   const gridEl=overlay.querySelector('.dpick-dump-grid');
+  const noteEl=overlay.querySelector('.dpick-note');
 
   function renderBoxes(){
     boxesEl.innerHTML='';
@@ -1096,6 +1107,8 @@ function makeDumplingPicker(target,initial,onChange){
   function renderDumps(){
     gridEl.innerHTML='';
     const box=BOXES[viewBox];
+    if(box.note){ noteEl.textContent='⚠ '+box.note; noteEl.classList.remove('hidden'); }
+    else noteEl.classList.add('hidden');
     if(!box.dumplings.length){
       gridEl.innerHTML='<div class="dpick-empty">No dumplings added yet for '+box.name+'.</div>';
       return;
